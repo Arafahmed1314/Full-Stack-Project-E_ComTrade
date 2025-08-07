@@ -1,10 +1,12 @@
 import express from "express";
-import { getProducts } from "../controllers/products.js";
+import { getProducts, getProductById, getCategories } from "../controllers/products.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 // Public route - no authentication required
 router.get("/products", getProducts);
+router.get("/products/:id", getProductById);
+router.get("/categories", getCategories);
 
 // Protected routes - authentication required
 router.post("/products", verifyToken, (req, res) => {
