@@ -1,12 +1,20 @@
-import React from 'react';
-import Navbar from '../common/Navbar';
-import HeroSection from '../hero/HeroSection';
+import React from "react";
+import Navbar from "../common/Navbar";
+import HeroSection from "../hero/HeroSection";
+import ProductShowcase from "../product/ProductShowcase.jsx";
+import CategorySection from "../category/CategorySection";
 
 const Layout = ({ children, showHero = false }) => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Navbar />
-      {showHero && <HeroSection />}
+      {showHero && (
+        <>
+          <HeroSection />
+          <ProductShowcase />
+          <CategorySection />
+        </>
+      )}
       {children}
     </div>
   );

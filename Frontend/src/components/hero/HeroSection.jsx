@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Grid3X3, Star, Sparkles, Zap, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowRight,
+  Grid3X3,
+  Star,
+  Sparkles,
+  Zap,
+  TrendingUp,
+} from "lucide-react";
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -9,40 +16,40 @@ const HeroSection = () => {
   const heroImages = [
     {
       id: 1,
-      url: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=1200&h=800&fit=crop&q=80',
-      alt: 'Premium Fashion Collection',
-      category: 'Fashion',
-      title: 'Premium Fashion',
-      subtitle: 'Discover trending styles',
-      discount: '30% OFF'
+      url: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=1200&h=800&fit=crop&q=80",
+      alt: "Premium Fashion Collection",
+      category: "Fashion",
+      title: "Premium Fashion",
+      subtitle: "Discover trending styles",
+      discount: "30% OFF",
     },
     {
       id: 2,
-      url: 'https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=1200&h=800&fit=crop&q=80',
-      alt: 'Latest Electronics',
-      category: 'Electronics',
-      title: 'Smart Electronics',
-      subtitle: 'Latest technology',
-      discount: '25% OFF'
+      url: "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=1200&h=800&fit=crop&q=80",
+      alt: "Latest Electronics",
+      category: "Electronics",
+      title: "Smart Electronics",
+      subtitle: "Latest technology",
+      discount: "25% OFF",
     },
     {
       id: 3,
-      url: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200&h=800&fit=crop&q=80',
-      alt: 'Luxury Jewelry',
-      category: 'Jewelry',
-      title: 'Luxury Jewelry',
-      subtitle: 'Timeless elegance',
-      discount: '40% OFF'
+      url: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200&h=800&fit=crop&q=80",
+      alt: "Luxury Jewelry",
+      category: "Jewelry",
+      title: "Luxury Jewelry",
+      subtitle: "Timeless elegance",
+      discount: "40% OFF",
     },
     {
       id: 4,
-      url: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?w=1200&h=800&fit=crop&q=80',
-      alt: 'Designer Accessories',
-      category: 'Accessories',
-      title: 'Designer Accessories',
-      subtitle: 'Complete your look',
-      discount: '35% OFF'
-    }
+      url: "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=1200&h=800&fit=crop&q=80",
+      alt: "Designer Accessories",
+      category: "Accessories",
+      title: "Designer Accessories",
+      subtitle: "Complete your look",
+      discount: "35% OFF",
+    },
   ];
 
   // Auto-slide functionality
@@ -92,7 +99,7 @@ const HeroSection = () => {
             }}
           />
         ))}
-        
+
         {/* Gradient orbs */}
         <motion.div
           className="absolute top-20 -left-40 w-80 h-80 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-3xl"
@@ -125,7 +132,9 @@ const HeroSection = () => {
           >
             <div
               className="w-full h-full bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${heroImages[currentSlide].url})` }}
+              style={{
+                backgroundImage: `url(${heroImages[currentSlide].url})`,
+              }}
             >
               {/* Enhanced overlay with gradient mesh */}
               <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-purple-900/50 to-black/70"></div>
@@ -139,10 +148,11 @@ const HeroSection = () => {
       <div className="relative z-10 w-full h-full flex items-center py-8 lg:py-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-screen lg:min-h-0">
-            
             {/* Main Text Content */}
-            <div className="lg:col-span-7 text-white space-y-4 lg:space-y-5 flex flex-col justify-center"
-                 style={{ minHeight: 'auto' }}>
+            <div
+              className="lg:col-span-7 text-white space-y-4 lg:space-y-5 flex flex-col justify-center"
+              style={{ minHeight: "auto" }}
+            >
               {/* Discount Badge */}
               <motion.div
                 initial={{ opacity: 0, scale: 0 }}
@@ -151,7 +161,10 @@ const HeroSection = () => {
                 className="inline-flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-red-500 px-4 py-2 rounded-full text-sm font-bold"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>Limited Time: {heroImages[currentSlide].discount} on {heroImages[currentSlide].category}</span>
+                <span>
+                  Limited Time: {heroImages[currentSlide].discount} on{" "}
+                  {heroImages[currentSlide].category}
+                </span>
                 <Zap className="w-4 h-4" />
               </motion.div>
 
@@ -164,7 +177,7 @@ const HeroSection = () => {
               >
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-tight">
                   <motion.span
-                    animate={{ 
+                    animate={{
                       backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
                     }}
                     transition={{ duration: 5, repeat: Infinity }}
@@ -177,13 +190,13 @@ const HeroSection = () => {
                   <span className="text-white">Your Perfect</span>
                   <br />
                   <motion.span
-                    animate={{ 
+                    animate={{
                       scale: [1, 1.05, 1],
                       textShadow: [
                         "0 0 20px rgba(147, 197, 253, 0.5)",
                         "0 0 40px rgba(147, 197, 253, 0.8)",
-                        "0 0 20px rgba(147, 197, 253, 0.5)"
-                      ]
+                        "0 0 20px rgba(147, 197, 253, 0.5)",
+                      ],
                     }}
                     transition={{ duration: 3, repeat: Infinity }}
                     className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent"
@@ -200,8 +213,16 @@ const HeroSection = () => {
                 transition={{ duration: 0.8, delay: 0.6 }}
                 className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 max-w-2xl leading-relaxed font-light"
               >
-                Explore our <span className="text-blue-400 font-semibold">curated collection</span> of premium products across fashion, electronics, 
-                jewelry, and more. Find exactly what you're looking for at <span className="text-green-400 font-semibold">unbeatable prices</span>.
+                Explore our{" "}
+                <span className="text-blue-400 font-semibold">
+                  curated collection
+                </span>{" "}
+                of premium products across fashion, electronics, jewelry, and
+                more. Find exactly what you're looking for at{" "}
+                <span className="text-green-400 font-semibold">
+                  unbeatable prices
+                </span>
+                .
               </motion.p>
 
               {/* Enhanced CTA Buttons */}
@@ -212,28 +233,33 @@ const HeroSection = () => {
                 className="flex flex-col sm:flex-row gap-4 lg:gap-6 pt-3 lg:pt-4"
               >
                 <motion.button
-                  whileHover={{ 
-                    scale: 1.05, 
+                  whileHover={{
+                    scale: 1.05,
                     boxShadow: "0 25px 50px -12px rgba(59, 130, 246, 0.5)",
-                    backgroundColor: "#1d4ed8"
+                    backgroundColor: "#1d4ed8",
                   }}
                   whileTap={{ scale: 0.95 }}
                   className="group relative bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 rounded-2xl font-bold text-base sm:text-lg flex items-center justify-center space-x-2 lg:space-x-3 transition-all duration-300 overflow-hidden"
                 >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  />
+                  <motion.div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <span className="relative z-10">Shop Now</span>
                   <ArrowRight className="relative z-10 w-5 h-5 lg:w-6 lg:h-6 group-hover:translate-x-2 transition-transform duration-300" />
                   <motion.div
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
                     className="absolute -top-1 -right-1 w-2 h-2 lg:w-3 lg:h-3 bg-yellow-400 rounded-full opacity-75"
                   />
                 </motion.button>
 
                 <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.2)" }}
+                  whileHover={{
+                    scale: 1.05,
+                    backgroundColor: "rgba(255,255,255,0.2)",
+                  }}
                   whileTap={{ scale: 0.95 }}
                   className="group relative bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 rounded-2xl font-bold text-base sm:text-lg flex items-center justify-center space-x-2 lg:space-x-3 transition-all duration-300"
                 >
@@ -254,58 +280,72 @@ const HeroSection = () => {
                 transition={{ duration: 0.8, delay: 1.0 }}
                 className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pt-6 lg:pt-2"
               >
-                <motion.div 
+                <motion.div
                   whileHover={{ scale: 1.1, y: -5 }}
                   className="text-center group cursor-pointer bg-white/5 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-white/10 hover:border-blue-400/30 transition-all duration-300"
                 >
-                  <motion.div 
+                  <motion.div
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 2, repeat: Infinity, delay: 0 }}
                     className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-1 lg:mb-2"
                   >
                     10K+
                   </motion.div>
-                  <div className="text-sm sm:text-base text-white font-semibold mb-1">Premium Products</div>
+                  <div className="text-sm sm:text-base text-white font-semibold mb-1">
+                    Premium Products
+                  </div>
                   <div className="flex justify-center mt-1">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current" />
+                      <Star
+                        key={i}
+                        className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current"
+                      />
                     ))}
                   </div>
                 </motion.div>
-                
-                <motion.div 
+
+                <motion.div
                   whileHover={{ scale: 1.1, y: -5 }}
                   className="text-center group cursor-pointer bg-white/5 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-white/10 hover:border-green-400/30 transition-all duration-300"
                 >
-                  <motion.div 
+                  <motion.div
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
                     className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-1 lg:mb-2"
                   >
                     50K+
                   </motion.div>
-                  <div className="text-sm sm:text-base text-white font-semibold mb-1">Happy Customers</div>
+                  <div className="text-sm sm:text-base text-white font-semibold mb-1">
+                    Happy Customers
+                  </div>
                   <div className="flex justify-center items-center mt-1 space-x-1">
                     <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" />
-                    <span className="text-xs sm:text-sm text-green-400 font-medium">98% Satisfaction</span>
+                    <span className="text-xs sm:text-sm text-green-400 font-medium">
+                      98% Satisfaction
+                    </span>
                   </div>
                 </motion.div>
-                
-                <motion.div 
+
+                <motion.div
                   whileHover={{ scale: 1.1, y: -5 }}
                   className="text-center group cursor-pointer bg-white/5 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-white/10 hover:border-purple-400/30 transition-all duration-300"
                 >
-                  <motion.div 
+                  <motion.div
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 2, repeat: Infinity, delay: 1 }}
                     className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-1 lg:mb-2"
                   >
                     4.9
                   </motion.div>
-                  <div className="text-sm sm:text-base text-white font-semibold mb-1">Average Rating</div>
+                  <div className="text-sm sm:text-base text-white font-semibold mb-1">
+                    Average Rating
+                  </div>
                   <div className="flex justify-center mt-1">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current" />
+                      <Star
+                        key={i}
+                        className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current"
+                      />
                     ))}
                   </div>
                 </motion.div>
@@ -322,48 +362,56 @@ const HeroSection = () => {
               >
                 {/* Main Product Card */}
                 <motion.div
-                  animate={{ 
+                  animate={{
                     y: [0, -20, 0],
                     rotateY: [0, 5, 0, -5, 0],
                   }}
-                  transition={{ 
+                  transition={{
                     y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                    rotateY: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+                    rotateY: {
+                      duration: 6,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    },
                   }}
                   className="w-full h-80 sm:h-96 lg:w-80 lg:h-96 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-4 lg:p-6 relative overflow-hidden shadow-2xl mx-auto"
                 >
                   {/* Glowing border effect */}
                   <motion.div
-                    animate={{ 
+                    animate={{
                       background: [
                         "linear-gradient(45deg, #3b82f6, #8b5cf6)",
                         "linear-gradient(45deg, #8b5cf6, #ef4444)",
                         "linear-gradient(45deg, #ef4444, #f59e0b)",
-                        "linear-gradient(45deg, #f59e0b, #3b82f6)"
-                      ]
+                        "linear-gradient(45deg, #f59e0b, #3b82f6)",
+                      ],
                     }}
                     transition={{ duration: 4, repeat: Infinity }}
                     className="absolute inset-0 rounded-3xl opacity-20 blur-sm"
                   />
-                  
+
                   {/* Card Content */}
                   <div className="relative z-10 h-full flex flex-col justify-between">
                     <div>
                       <motion.div
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                        transition={{
+                          duration: 20,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
                         className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4"
                       >
                         <Sparkles className="w-8 h-8 text-white" />
                       </motion.div>
-                      
+
                       <h3 className="text-xl lg:text-2xl font-bold text-white mb-2">
                         {heroImages[currentSlide].title}
                       </h3>
                       <p className="text-gray-300 mb-3 lg:mb-4 text-sm lg:text-base">
                         {heroImages[currentSlide].subtitle}
                       </p>
-                      
+
                       {/* Mini product preview */}
                       <div className="w-full h-24 lg:h-32 bg-white/10 rounded-xl mb-3 lg:mb-4 overflow-hidden">
                         <motion.img
@@ -377,7 +425,7 @@ const HeroSection = () => {
                         />
                       </div>
                     </div>
-                    
+
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -391,25 +439,25 @@ const HeroSection = () => {
 
                 {/* Floating Elements */}
                 <motion.div
-                  animate={{ 
+                  animate={{
                     rotate: 360,
-                    scale: [1, 1.2, 1]
+                    scale: [1, 1.2, 1],
                   }}
-                  transition={{ 
+                  transition={{
                     rotate: { duration: 15, repeat: Infinity, ease: "linear" },
-                    scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                    scale: { duration: 3, repeat: Infinity, ease: "easeInOut" },
                   }}
                   className="absolute -top-8 -right-8 w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full opacity-80 blur-xl"
                 />
-                
+
                 <motion.div
-                  animate={{ 
+                  animate={{
                     rotate: -360,
-                    scale: [1.2, 1, 1.2]
+                    scale: [1.2, 1, 1.2],
                   }}
-                  transition={{ 
+                  transition={{
                     rotate: { duration: 12, repeat: Infinity, ease: "linear" },
-                    scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                    scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
                   }}
                   className="absolute -bottom-6 -left-6 w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full opacity-70 blur-lg"
                 />
@@ -450,8 +498,8 @@ const HeroSection = () => {
             whileTap={{ scale: 0.9 }}
             className={`relative transition-all duration-300 ${
               index === currentSlide
-                ? 'w-12 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full'
-                : 'w-4 h-4 bg-white/50 hover:bg-white/80 rounded-full'
+                ? "w-12 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                : "w-4 h-4 bg-white/50 hover:bg-white/80 rounded-full"
             }`}
           >
             {index === currentSlide && (
@@ -485,10 +533,16 @@ const HeroSection = () => {
             >
               <Sparkles className="w-4 h-4 text-white" />
             </motion.div>
-            <div className="text-sm font-medium opacity-80">Featured Category</div>
+            <div className="text-sm font-medium opacity-80">
+              Featured Category
+            </div>
           </div>
-          <div className="text-xl font-bold mb-1">{heroImages[currentSlide].category}</div>
-          <div className="text-green-400 font-semibold text-sm">{heroImages[currentSlide].discount}</div>
+          <div className="text-xl font-bold mb-1">
+            {heroImages[currentSlide].category}
+          </div>
+          <div className="text-green-400 font-semibold text-sm">
+            {heroImages[currentSlide].discount}
+          </div>
           <motion.div
             animate={{ width: ["0%", "100%"] }}
             transition={{ duration: 5, repeat: Infinity }}
@@ -517,7 +571,12 @@ const HeroSection = () => {
             >
               <motion.div
                 animate={{ y: [0, 12, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0.5,
+                }}
                 className="w-1 h-3 bg-white/60 rounded-full mt-2"
               />
             </motion.div>
