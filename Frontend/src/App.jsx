@@ -1,8 +1,11 @@
+import React from 'react';
+import Layout from './components/common/Layout';
+
 function App() {
   return (
-    <div className="app">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </div>
+    <Layout showHero={true}>
+      {/* Page content would go here for other pages */}
+    </Layout>
   );
 }
 
