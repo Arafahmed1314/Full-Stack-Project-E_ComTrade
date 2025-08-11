@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "user": "Alice Johnson",
+    "avatar": "https://randomuser.me/api/portraits/women/44.jpg",
+    "comment": "EtRaDe is my go-to for all tech gadgets! The UI is smooth and the deals are unbeatable.",
+    "rating": 5
+  },
+  {
+    "id": 2,
+    "user": "Michael Lee",
+    "avatar": "https://randomuser.me/api/portraits/men/32.jpg",
+    "comment": "Fast delivery and excellent customer service. Highly recommend this platform!",
+    "rating": 5
+  },
+  {
+    "id": 3,
+    "user": "Priya Singh",
+    "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+    "comment": "Great variety of products and the wishlist feature is super handy.",
+    "rating": 4
+  },
+  {
+    "id": 4,
+    "user": "Carlos Martinez",
+    "avatar": "https://randomuser.me/api/portraits/men/85.jpg",
+    "comment": "I love the category browsing and the product recommendations are spot on!",
+    "rating": 5
+  },
+  {
+    "id": 5,
+    "user": "Sophie Müller",
+    "avatar": "https://randomuser.me/api/portraits/women/12.jpg",
+    "comment": "Easy checkout process and secure payments. Will shop again!",
+    "rating": 4
+  }
+]

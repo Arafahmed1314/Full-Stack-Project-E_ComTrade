@@ -1,11 +1,26 @@
 import React from "react";
-import Layout from "./components/common/Layout";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/common/Navbar";
+import Footer from "./components/common/Footer";
+import HomePage from "./pages/HomePage";
+import ProductsPage from "./pages/ProductsPage";
+import ProductDetails from "./components/product/ProductDetails";
 
 function App() {
   return (
-    <Layout showHero={true}>
-      {/* Page content would go here for other pages */}
-    </Layout>
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/products/:productId" element={<ProductDetails />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

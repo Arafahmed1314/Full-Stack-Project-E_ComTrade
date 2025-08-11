@@ -8,13 +8,13 @@ const Layout = ({ children, showHero = false }) => {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      {showHero && (
+      {/* {showHero && (
         <>
           <HeroSection />
           <ProductShowcase />
           <CategorySection />
         </>
-      )}
+      )} */}
       {children}
     </div>
   );

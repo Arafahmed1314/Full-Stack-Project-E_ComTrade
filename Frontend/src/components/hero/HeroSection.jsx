@@ -66,16 +66,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen lg:h-screen lg:flex lg:items-center">
-      {/* For larger screens only, use calc to account for navbar */}
-      <style jsx>{`
-        @media (min-width: 1024px) {
-          section {
-            height: calc(100vh - 5rem) !important;
-            min-height: auto !important;
-          }
-        }
-      `}</style>
+    <section className="w-full pb-12  bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900  lg:flex lg:items-center">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         {/* Floating particles */}

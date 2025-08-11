@@ -18,34 +18,28 @@ const CategorySection = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    // Extract unique categories from products data
     const uniqueCategories = [
-      ...new Set(productsData.products.map((product) => product.category)),
+      ...new Set(productsData.products.map((p) => p.category)),
     ];
 
-    // Create category objects with icons and additional info
-    const categoryData = uniqueCategories.map((category) => {
+    const data = uniqueCategories.map((category) => {
       const productsInCategory = productsData.products.filter(
-        (product) => product.category === category
+        (p) => p.category === category
       );
-      const categoryInfo = getCategoryInfo(category);
+      const info = getCategoryInfo(category);
 
       return {
         name: category,
         count: productsInCategory.length,
-        icon: categoryInfo.icon,
-        color: categoryInfo.color,
-        bgGradient: categoryInfo.bgGradient,
-        description: categoryInfo.description,
-        image: categoryInfo.image,
+        ...info,
       };
     });
 
-    setCategories(categoryData);
+    setCategories(data);
   }, []);
 
   const getCategoryInfo = (category) => {
-    const categoryMap = {
+    const map = {
       Electronics: {
         icon: Smartphone,
         color: "text-blue-600",
@@ -129,7 +123,7 @@ const CategorySection = () => {
     };
 
     return (
-      categoryMap[category] || {
+      map[category] || {
         icon: Monitor,
         color: "text-gray-600",
         bgGradient: "from-gray-500 to-gray-600",
@@ -140,17 +134,14 @@ const CategorySection = () => {
     );
   };
 
-  const handleCategoryClick = (categoryName) => {
-    // Future routing will be implemented here
-    console.log(`Navigate to /products/${categoryName.toLowerCase()}`);
-    // For now, just log the action
-    alert(`Navigating to ${categoryName} products page (to be implemented)`);
+  const handleCategoryClick = (name) => {
+    console.log(`Navigate to /products/${name.toLowerCase()}`);
+    alert(`Navigating to ${name} products page (to be implemented)`);
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-white to-gray-50 block w-full clear-both">
+    <section className=" bg-gradient-to-br from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
         <div
           className="text-center mb-16 animate-fadeInUp"
           style={{ animationDelay: "200ms" }}
@@ -164,45 +155,38 @@ const CategorySection = () => {
           </p>
         </div>
 
-        {/* Categories Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 auto-rows-fr">
-          {categories.map((category, index) => {
-            const IconComponent = category.icon;
-
+          {categories.slice(0, 8).map((category, i) => {
+            const Icon = category.icon;
             return (
               <div
                 key={category.name}
+                onClick={() => handleCategoryClick(category.name)}
                 className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-102 cursor-pointer overflow-hidden border border-gray-100 animate-slideInUp mx-2"
                 style={{
-                  animationDelay: `${index * 150 + 400}ms`,
+                  animationDelay: `${i * 150 + 400}ms`,
                   minHeight: "320px",
                 }}
-                onClick={() => handleCategoryClick(category.name)}
               >
-                {/* Background Image */}
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src={category.image}
                     alt={category.name}
                     className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                   />
-                  {/* Gradient Overlay */}
                   <div
                     className={`absolute inset-0 bg-gradient-to-t ${category.bgGradient} opacity-70 group-hover:opacity-80 transition-opacity duration-300`}
                   ></div>
 
-                  {/* Icon */}
                   <div className="absolute top-4 left-4 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                    <IconComponent className="w-6 h-6 text-white" />
+                    <Icon className="w-6 h-6 text-white" />
                   </div>
 
-                  {/* Product Count Badge */}
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-sm font-bold">
                     {category.count} items
                   </div>
                 </div>
 
-                {/* Category Info */}
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
                     {category.name}
@@ -211,7 +195,6 @@ const CategorySection = () => {
                     {category.description}
                   </p>
 
-                  {/* Explore Button */}
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-500 group-hover:text-gray-700 transition-colors duration-200">
                       Explore now
@@ -234,21 +217,16 @@ const CategorySection = () => {
                   </div>
                 </div>
 
-                {/* Hover Effect Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
               </div>
             );
           })}
         </div>
 
-        {/* Call to Action */}
         <div
-          className="text-center mt-16 animate-fadeInUp"
+          className="text-center py-12 animate-fadeInUp"
           style={{ animationDelay: "1000ms" }}
         >
-          <p className="text-gray-600 mb-6">
-            Can't find what you're looking for?
-          </p>
           <button className="bg-gradient-to-r from-gray-800 to-gray-900 text-white px-8 py-3 rounded-xl font-semibold hover:from-gray-900 hover:to-black transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
             Browse All Products
           </button>
