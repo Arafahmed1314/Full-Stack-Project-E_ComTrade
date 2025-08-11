@@ -66,7 +66,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="w-full pb-12  bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900  lg:flex lg:items-center">
+    <section className="w-full pb-32  bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900  lg:flex lg:items-center">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         {/* Floating particles */}
@@ -144,21 +144,6 @@ const HeroSection = () => {
               className="lg:col-span-7 text-white space-y-4 lg:space-y-5 flex flex-col justify-center"
               style={{ minHeight: "auto" }}
             >
-              {/* Discount Badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-red-500 px-4 py-2 rounded-full text-sm font-bold"
-              >
-                <Sparkles className="w-4 h-4" />
-                <span>
-                  Limited Time: {heroImages[currentSlide].discount} on{" "}
-                  {heroImages[currentSlide].category}
-                </span>
-                <Zap className="w-4 h-4" />
-              </motion.div>
-
               {/* Main Headline with Enhanced Typography */}
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
@@ -262,84 +247,6 @@ const HeroSection = () => {
                     className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full"
                   />
                 </motion.button>
-              </motion.div>
-
-              {/* Enhanced Stats with Animation - Improved Visibility */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.0 }}
-                className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pt-6 lg:pt-2"
-              >
-                <motion.div
-                  whileHover={{ scale: 1.1, y: -5 }}
-                  className="text-center group cursor-pointer bg-white/5 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-white/10 hover:border-blue-400/30 transition-all duration-300"
-                >
-                  <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 0 }}
-                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-1 lg:mb-2"
-                  >
-                    10K+
-                  </motion.div>
-                  <div className="text-sm sm:text-base text-white font-semibold mb-1">
-                    Premium Products
-                  </div>
-                  <div className="flex justify-center mt-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current"
-                      />
-                    ))}
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  whileHover={{ scale: 1.1, y: -5 }}
-                  className="text-center group cursor-pointer bg-white/5 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-white/10 hover:border-green-400/30 transition-all duration-300"
-                >
-                  <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-1 lg:mb-2"
-                  >
-                    50K+
-                  </motion.div>
-                  <div className="text-sm sm:text-base text-white font-semibold mb-1">
-                    Happy Customers
-                  </div>
-                  <div className="flex justify-center items-center mt-1 space-x-1">
-                    <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" />
-                    <span className="text-xs sm:text-sm text-green-400 font-medium">
-                      98% Satisfaction
-                    </span>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  whileHover={{ scale: 1.1, y: -5 }}
-                  className="text-center group cursor-pointer bg-white/5 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-white/10 hover:border-purple-400/30 transition-all duration-300"
-                >
-                  <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-1 lg:mb-2"
-                  >
-                    4.9
-                  </motion.div>
-                  <div className="text-sm sm:text-base text-white font-semibold mb-1">
-                    Average Rating
-                  </div>
-                  <div className="flex justify-center mt-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current"
-                      />
-                    ))}
-                  </div>
-                </motion.div>
               </motion.div>
             </div>
 
@@ -540,62 +447,6 @@ const HeroSection = () => {
             className="h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-3"
           />
         </motion.div>
-      </motion.div>
-
-      {/* Enhanced Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.5 }}
-        className="absolute bottom-8 left-8 z-20 hidden lg:block"
-      >
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className="flex flex-col items-center text-white/80 space-y-3 cursor-pointer"
-        >
-          <div className="text-sm font-medium">Scroll to explore</div>
-          <motion.div className="relative">
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center"
-            >
-              <motion.div
-                animate={{ y: [0, 12, 0] }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0.5,
-                }}
-                className="w-1 h-3 bg-white/60 rounded-full mt-2"
-              />
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      </motion.div>
-
-      {/* Performance Indicators */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 2 }}
-        className="absolute top-32 left-8 z-20 hidden lg:block"
-      >
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-4 text-white">
-          <div className="flex items-center space-x-2 mb-2">
-            <TrendingUp className="w-5 h-5 text-green-400" />
-            <span className="text-sm font-semibold">Live Stats</span>
-          </div>
-          <motion.div
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="text-2xl font-bold text-green-400"
-          >
-            +{Math.floor(Math.random() * 100) + 200}
-          </motion.div>
-          <div className="text-xs text-gray-300">Sales today</div>
-        </div>
       </motion.div>
     </section>
   );

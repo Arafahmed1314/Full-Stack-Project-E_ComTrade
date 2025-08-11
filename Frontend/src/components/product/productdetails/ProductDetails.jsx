@@ -5,7 +5,7 @@ import ProductInfo from "./ProductInfo";
 import ProductTabs from "./ProductTabs";
 import RelatedProducts from "./RelatedProducts";
 import ProductBreadcrumb from "./ProductBreadcrumb";
-import productsData from "../../data/products.json";
+import productsData from "../../../data/products.json";
 import { ArrowLeft } from "lucide-react";
 
 const ProductDetails = () => {

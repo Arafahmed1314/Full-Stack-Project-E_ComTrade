@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Star, ThumbsUp, ThumbsDown } from "lucide-react";
-import WriteReviewModal from "./WriteReviewModal";
+import WriteReviewModal from './WriteReviewModal';
 
 const ProductTabs = ({ product }) => {
   const [activeTab, setActiveTab] = useState("description");

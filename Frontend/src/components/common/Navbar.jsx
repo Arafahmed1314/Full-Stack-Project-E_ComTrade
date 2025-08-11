@@ -13,14 +13,22 @@ import {
   Grid3X3,
   Info,
   Mail,
+  LogOut,
+  LogIn,
+  UserPlus,
 } from "lucide-react";
+import { AuthModal } from "../auth";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authView, setAuthView] = useState("login");
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Mock login state
 
   // Mock data for demonstration
   const cartCount = 3;
@@ -50,6 +58,21 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isUserDropdownOpen &&
+        !event.target.closest(".user-dropdown-container")
+      ) {
+        setIsUserDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isUserDropdownOpen]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -346,19 +369,115 @@ const Navbar = () => {
                     />
                   </motion.button>
 
-                  {/* User */}
-                  <motion.button
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="relative p-3 bg-white/70 backdrop-blur-sm rounded-full hover:bg-white/90 transition-all duration-300 group shadow-lg"
-                  >
-                    <User className="w-5 h-5 text-gray-600 group-hover:text-green-600 transition-colors duration-300" />
-                    <motion.div
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                      className="absolute inset-0 bg-green-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    />
-                  </motion.button>
+                  {/* User Dropdown */}
+                  <div className="relative user-dropdown-container">
+                    <motion.button
+                      onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                      whileHover={{ scale: 1.1, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="relative p-3 bg-white/70 backdrop-blur-sm rounded-full hover:bg-white/90 transition-all duration-300 group shadow-lg"
+                    >
+                      <User className="w-5 h-5 text-gray-600 group-hover:text-green-600 transition-colors duration-300" />
+                      <motion.div
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                        className="absolute inset-0 bg-green-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      />
+                    </motion.button>
+
+                    {/* User Dropdown Menu */}
+                    <AnimatePresence>
+                      {isUserDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 overflow-hidden z-50"
+                        >
+                          {!isLoggedIn ? (
+                            <>
+                              {/* Sign In */}
+                              <button
+                                onClick={() => {
+                                  setAuthView("login");
+                                  setIsAuthModalOpen(true);
+                                  setIsUserDropdownOpen(false);
+                                }}
+                                className="w-full px-4 py-3 text-left text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center gap-3"
+                              >
+                                <User className="w-4 h-4" />
+                                Sign In
+                              </button>
+
+                              {/* Sign Up */}
+                              <button
+                                onClick={() => {
+                                  setAuthView("register");
+                                  setIsAuthModalOpen(true);
+                                  setIsUserDropdownOpen(false);
+                                }}
+                                className="w-full px-4 py-3 text-left text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 flex items-center gap-3 border-t border-gray-100"
+                              >
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                                  />
+                                </svg>
+                                Sign Up
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              {/* Profile */}
+                              <button className="w-full px-4 py-3 text-left text-gray-700 hover:bg-gray-50 transition-all duration-200 flex items-center gap-3">
+                                <User className="w-4 h-4" />
+                                My Profile
+                              </button>
+
+                              {/* Orders */}
+                              <button className="w-full px-4 py-3 text-left text-gray-700 hover:bg-gray-50 transition-all duration-200 flex items-center gap-3 border-t border-gray-100">
+                                <Package className="w-4 h-4" />
+                                My Orders
+                              </button>
+
+                              {/* Logout */}
+                              <button
+                                onClick={() => {
+                                  setIsLoggedIn(false);
+                                  setIsUserDropdownOpen(false);
+                                }}
+                                className="w-full px-4 py-3 text-left text-red-600 hover:bg-red-50 transition-all duration-200 flex items-center gap-3 border-t border-gray-100"
+                              >
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                  />
+                                </svg>
+                                Logout
+                              </button>
+                            </>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </motion.div>
               </AnimatePresence>
 
@@ -447,6 +566,53 @@ const Navbar = () => {
                   </div>
                 ))}
 
+                {/* Mobile Auth Options */}
+                <div className="mt-4 pt-4 border-t border-gray-200/50">
+                  <div className="space-y-2">
+                    {isLoggedIn ? (
+                      <motion.button
+                        onClick={() => {
+                          // Handle logout
+                          console.log("Logout clicked");
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="flex items-center space-x-2 w-full px-3 py-2 text-red-600 hover:text-red-700 hover:bg-red-50/50 rounded-lg transition-colors duration-200"
+                        whileHover={{ x: 4 }}
+                      >
+                        <LogOut className="w-4 h-4" />
+                        <span className="font-medium">Logout</span>
+                      </motion.button>
+                    ) : (
+                      <>
+                        <motion.button
+                          onClick={() => {
+                            setAuthView("signin");
+                            setIsAuthModalOpen(true);
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="flex items-center space-x-2 w-full px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50/50 rounded-lg transition-colors duration-200"
+                          whileHover={{ x: 4 }}
+                        >
+                          <LogIn className="w-4 h-4" />
+                          <span className="font-medium">Sign In</span>
+                        </motion.button>
+                        <motion.button
+                          onClick={() => {
+                            setAuthView("signup");
+                            setIsAuthModalOpen(true);
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="flex items-center space-x-2 w-full px-3 py-2 text-green-600 hover:text-green-700 hover:bg-green-50/50 rounded-lg transition-colors duration-200"
+                          whileHover={{ x: 4 }}
+                        >
+                          <UserPlus className="w-4 h-4" />
+                          <span className="font-medium">Sign Up</span>
+                        </motion.button>
+                      </>
+                    )}
+                  </div>
+                </div>
+
                 {/* Mobile Search */}
                 <form onSubmit={handleSearchSubmit} className="mt-4">
                   <div className="relative">
@@ -468,6 +634,13 @@ const Navbar = () => {
 
       {/* Spacer to prevent content from hiding behind fixed navbar - Dynamic height */}
       <div className="h-16 lg:h-20 flex-shrink-0"></div>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        initialView={authView}
+      />
     </>
   );
 };

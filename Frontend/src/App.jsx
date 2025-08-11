@@ -4,7 +4,7 @@ import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
-import ProductDetails from "./components/product/ProductDetails";
+import ProductDetails from "./components/product/productdetails/ProductDetails";
 
 function App() {
   return (
