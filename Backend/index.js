@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import DbConnection from "./db/database.js";
 import dotenv from "dotenv";
+dotenv.config();
 import bodyParser from "body-parser";
 import productRoute from "./routes/productRoute.js";
 import authRoute from "./routes/authRoute.js";
@@ -15,7 +16,6 @@ import cookieParser from "cookie-parser";
 import { verifyToken } from "./middlewares/authMiddleware.js";
 
 const app = express();
-dotenv.config();
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
