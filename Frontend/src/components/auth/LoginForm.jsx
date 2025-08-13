@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Eye, EyeOff, User, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import SocialButtons from "./SocialButtons";
+import { authProvider } from "../../utils/auth";
+import { useDispatch } from "react-redux";
 
 const LoginForm = ({ onSwitchToRegister }) => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -13,9 +15,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log("Login data:", data);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await authProvider(data, `http://localhost:5000/api/auth/login`, dispatch);
   };
 
   return (

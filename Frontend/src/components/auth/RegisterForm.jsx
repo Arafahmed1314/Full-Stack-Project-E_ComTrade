@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import SocialButtons from "./SocialButtons";
-
+import { useDispatch } from "react-redux";
+import { authProvider } from "../../utils/auth";
 const RegisterForm = ({ onSwitchToLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const dispatch = useDispatch();
+  // const user = useSelector((state) => state?.user?.user);
 
   const {
     register,
@@ -17,26 +20,11 @@ const RegisterForm = ({ onSwitchToLogin }) => {
   const password = watch("password", "");
 
   const onSubmit = async (data) => {
-    console.log("Register data:", data);
-    // Simulate API call
-    const body = {
-      name: data.username,
-      email: data.email,
-      password: data.password,
-      registrationType: "manual",
-    };
-    console.log(body);
-
-    const response = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-    console.log(response);
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await authProvider(
+      data,
+      `http://localhost:5000/api/auth/register`,
+      dispatch
+    );
   };
 
   return (
