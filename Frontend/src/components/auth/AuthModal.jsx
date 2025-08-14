@@ -20,8 +20,8 @@ const AuthModal = ({ isOpen, onClose, initialView = "login" }) => {
         onClick={onClose}
       />
 
-      {/* Modal Container */}
-      <div className="relative w-full max-w-sm sm:max-w-md max-h-[95vh] overflow-y-auto transform scale-95 animate-modal-appear">
+      {/* Modal Container - Made wider and shorter */}
+      <div className="relative w-full max-w-md sm:max-w-lg lg:max-w-xl max-h-[85vh] overflow-y-auto transform scale-95 animate-modal-appear">
         {/* Glassmorphism Background */}
         <div className="relative bg-white/95 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
           {/* Animated Background Gradient */}
@@ -36,8 +36,8 @@ const AuthModal = ({ isOpen, onClose, initialView = "login" }) => {
             <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
           </button>
 
-          {/* Content */}
-          <div className="relative p-4 sm:p-6 lg:p-8 pt-8 sm:pt-10 lg:pt-12">
+          {/* Content - Reduced padding for shorter height */}
+          <div className="relative p-4 sm:p-5 lg:p-6 pt-6 sm:pt-8 lg:pt-10">
             {/* Logo/Brand */}
 
             {/* Form Container */}

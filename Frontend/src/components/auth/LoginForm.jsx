@@ -19,9 +19,9 @@ const LoginForm = ({ onSwitchToRegister }) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-4 sm:p-6 lg:p-8 opacity-0 animate-fade-in">
+    <div className="w-full max-w-lg mx-auto p-4 sm:p-6 lg:p-8 opacity-0 animate-fade-in">
       {/* Header */}
-      <div className="text-center mb-6 sm:mb-8">
+      <div className="text-center mb-4 sm:mb-6">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 animate-slide-up">
           Welcome Back
         </h2>
@@ -34,7 +34,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
       <SocialButtons />
 
       {/* Divider */}
-      <div className="relative my-6">
+      <div className="relative my-4">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-200" />
         </div>
