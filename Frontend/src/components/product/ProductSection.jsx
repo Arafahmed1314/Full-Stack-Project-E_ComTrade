@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import ProductFilter from "./ProductFilter";
-import productsData from "../../data/products.json";
 import {
   Filter,
   Search,
@@ -13,18 +13,29 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const ProductSection = () => {
-  const [products] = useState(productsData.products || []);
-  const [filteredProducts, setFilteredProducts] = useState(
-    productsData.products || []
-  );
+const ProductSection = ({ products, productPagination }) => {
+  // const [products] = useState(productsData.products || []);
+  const [filteredProducts, setFilteredProducts] = useState(products || []);
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("featured");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(12);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Use client-side pagination for filtered/sorted products
+  const productsPerPage = 12;
+  const totalPages = Math.ceil(
+    (filteredProducts?.length || 0) / productsPerPage
+  );
+
+  // Calculate which products to show for current page
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = Array.isArray(filteredProducts)
+    ? filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct)
+    : [];
 
   // Check if device is mobile
   useEffect(() => {
@@ -37,16 +48,7 @@ const ProductSection = () => {
 
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-  console.log(filteredProducts);
-  // Pagination
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = Array.isArray(filteredProducts)
-    ? filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct)
-    : [];
-  const totalPages = Math.ceil(
-    (filteredProducts?.length || 0) / productsPerPage
-  );
+  // console.log(filteredProducts);
 
   const sortOptions = [
     { value: "featured", label: "Featured" },
@@ -88,7 +90,11 @@ const ProductSection = () => {
     setCurrentPage(1); // Reset to first page when filters change
   }, [searchQuery, sortBy, products]);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    // Scroll to top when page changes for better user experience
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -304,13 +310,16 @@ const ProductSection = () => {
                   >
                     <div className="text-sm text-gray-600">
                       Showing {indexOfFirstProduct + 1} to{" "}
-                      {Math.min(indexOfLastProduct, filteredProducts.length)} of{" "}
-                      {filteredProducts.length} products
+                      {Math.min(
+                        indexOfLastProduct,
+                        filteredProducts?.length || 0
+                      )}{" "}
+                      of {filteredProducts?.length || 0} products
                     </div>
                     <nav className="flex items-center space-x-1">
                       <button
                         onClick={() => paginate(currentPage - 1)}
-                        disabled={currentPage === 1}
+                        disabled={currentPage <= 1}
                         className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                       >
                         Previous
@@ -364,7 +373,7 @@ const ProductSection = () => {
 
                       <button
                         onClick={() => paginate(currentPage + 1)}
-                        disabled={currentPage === totalPages}
+                        disabled={currentPage >= totalPages}
                         className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                       >
                         Next

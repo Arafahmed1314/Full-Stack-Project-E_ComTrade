@@ -8,12 +8,14 @@ import ProductDetails from "./components/product/productdetails/ProductDetails";
 import Navbar from "./components/common/navbar/Navbar";
 import { useDispatch } from "react-redux";
 import { checkAuth } from "./utils/checkAuth";
+import { fetchProductFromApi } from "./utils/fetchProductFromApi";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     checkAuth(dispatch);
+    fetchProductFromApi(dispatch);
   }, [dispatch]);
   return (
     <Router>

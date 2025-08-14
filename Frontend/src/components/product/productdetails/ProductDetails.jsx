@@ -5,8 +5,8 @@ import ProductInfo from "./ProductInfo";
 import ProductTabs from "./ProductTabs";
 import RelatedProducts from "./RelatedProducts";
 import ProductBreadcrumb from "./ProductBreadcrumb";
-import productsData from "../../../data/products.json";
 import { ArrowLeft } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -15,28 +15,52 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [relatedProducts, setRelatedProducts] = useState([]);
 
+  // Get products array from Redux
+  const products = useSelector(
+    (state) => state.product?.products?.products || []
+  );
+
   useEffect(() => {
-    // Find product by ID
-    const foundProduct = productsData.products?.find(
-      (p) => p.id === parseInt(productId)
-    );
-    console.log(foundProduct);
+    if (!products || products.length === 0) return;
+
+    // Find product by ID - convert both to strings for comparison
+    const foundProduct = products.find((p) => String(p.id) === String(productId));
 
     if (foundProduct) {
-      setProduct(foundProduct);
+      // Normalize the product data to match component expectations
+      const normalizedProduct = {
+        ...foundProduct,
+        name: foundProduct.title, // Map title to name
+        originalPrice: foundProduct.price * 1.2, // Create original price (20% higher)
+        images: foundProduct.images || [foundProduct.image], // Ensure images array exists
+        rating: foundProduct.rating?.rate || foundProduct.rating || 0, // Extract rating number
+        reviews: foundProduct.rating?.count || 0, // Extract review count
+      };
+      
+      setProduct(normalizedProduct);
 
-      // Get related products from the same category
-      const related = productsData.products
-        ?.filter(
+      // Get related products from the same category (max 4)
+      const related = products
+        .filter(
           (p) =>
-            p.category === foundProduct.category && p.id !== foundProduct.id
+            p.category === foundProduct.category && String(p.id) !== String(foundProduct.id)
         )
-        .slice(0, 4);
-      setRelatedProducts(related || []);
+        .slice(0, 4)
+        .map(p => ({
+          ...p,
+          name: p.title,
+          originalPrice: p.price * 1.2,
+          images: p.images || [p.image],
+          rating: p.rating?.rate || p.rating || 0,
+          reviews: p.rating?.count || 0,
+        }));
+      setRelatedProducts(related);
+    } else {
+      setProduct(null);
     }
 
     setLoading(false);
-  }, [productId]);
+  }, [productId, products]);
 
   if (loading) {
     return (
@@ -96,7 +120,7 @@ const ProductDetails = () => {
         {relatedProducts.length > 0 && (
           <RelatedProducts
             currentProduct={product}
-            allProducts={productsData.products || productsData}
+            allProducts={relatedProducts}
           />
         )}
       </div>

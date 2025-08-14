@@ -3,6 +3,7 @@ import { setUser } from "../../redux/userSlice";
 import toast from "react-hot-toast";
 export async function authProvider(authData, url, dispatch, actionType) {
     let body = {};
+
     try {
         if (actionType === "login") {
             body = {
@@ -32,6 +33,7 @@ export async function authProvider(authData, url, dispatch, actionType) {
                 dispatch(setUser(result.user));
             }
             toast.success(result.message || "Authentication successful");
+
         } else {
             console.log("Authentication failed");
             toast.error(result.message || "Something went wrong");

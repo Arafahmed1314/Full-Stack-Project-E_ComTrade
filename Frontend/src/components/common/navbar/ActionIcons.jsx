@@ -1,5 +1,6 @@
 import React from "react";
 import { Heart, ShoppingCart, User } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const ActionIcons = ({
   wishlistCount,
@@ -8,6 +9,7 @@ const ActionIcons = ({
   setIsUserDropdownOpen,
   isSearchExpanded,
 }) => {
+  const user = useSelector((state) => state.user);
   return (
     <div
       className={`flex items-center space-x-2 ${
@@ -37,9 +39,15 @@ const ActionIcons = ({
       {/* User Dropdown Button */}
       <button
         onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-        className="relative p-3 bg-white/70 backdrop-blur-sm rounded-full hover:bg-white/90 transition-all duration-200 hover:scale-110 group shadow-lg"
+        className="relative p-3 bg-white/70 backdrop-blur-sm rounded-full hover:bg-white/90 transition-all duration-200 hover:scale-110 group shadow-lg flex justify-center items-center"
       >
-        <User className="w-5 h-5 text-gray-600 group-hover:text-green-600 transition-colors duration-200" />
+        {user.user ? (
+          <span className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 font-semibold group-hover:bg-green-100 group-hover:text-green-600 transition-all duration-200">
+            {user.user.name.slice(0, 1).toUpperCase()}
+          </span>
+        ) : (
+          <User className="w-5 h-5 text-gray-600 group-hover:text-green-600 transition-colors duration-200" />
+        )}
       </button>
     </div>
   );

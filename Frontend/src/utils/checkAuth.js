@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { setUser } from '../../redux/userSlice';
 
 export async function checkAuth(dispatch) {
