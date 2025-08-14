@@ -24,7 +24,9 @@ const ProductDetails = () => {
     if (!products || products.length === 0) return;
 
     // Find product by ID - convert both to strings for comparison
-    const foundProduct = products.find((p) => String(p.id) === String(productId));
+    const foundProduct = products.find(
+      (p) => String(p.id) === String(productId)
+    );
 
     if (foundProduct) {
       // Normalize the product data to match component expectations
@@ -36,17 +38,18 @@ const ProductDetails = () => {
         rating: foundProduct.rating?.rate || foundProduct.rating || 0, // Extract rating number
         reviews: foundProduct.rating?.count || 0, // Extract review count
       };
-      
+
       setProduct(normalizedProduct);
 
       // Get related products from the same category (max 4)
       const related = products
         .filter(
           (p) =>
-            p.category === foundProduct.category && String(p.id) !== String(foundProduct.id)
+            p.category === foundProduct.category &&
+            String(p.id) !== String(foundProduct.id)
         )
         .slice(0, 4)
-        .map(p => ({
+        .map((p) => ({
           ...p,
           name: p.title,
           originalPrice: p.price * 1.2,
