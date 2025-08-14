@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable no-unused-vars */
+
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Package } from "lucide-react";
 import AuthButtons from "./AuthButtons";

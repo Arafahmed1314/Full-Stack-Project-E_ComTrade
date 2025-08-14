@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Eye, EyeOff, User, Lock } from "lucide-react";
+import { Eye, EyeOff, User, Lock, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import SocialButtons from "./SocialButtons";
 import { authProvider } from "../../utils/auth";
@@ -15,7 +15,12 @@ const LoginForm = ({ onSwitchToRegister }) => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    await authProvider(data, `http://localhost:5000/api/auth/login`, dispatch);
+    await authProvider(
+      data,
+      `http://localhost:5000/api/auth/login`,
+      dispatch,
+      "login"
+    );
   };
 
   return (
@@ -53,41 +58,40 @@ const LoginForm = ({ onSwitchToRegister }) => {
         {/* Username Field */}
         <div>
           <label
-            htmlFor="username"
+            htmlFor="email"
             className="block text-sm font-medium text-gray-700 mb-2"
           >
-            Username
+            Email Address
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <User className="h-5 w-5 text-gray-400" />
+              <Mail className="h-5 w-5 text-gray-400" />
             </div>
             <input
-              id="username"
-              type="text"
-              placeholder="Enter your username"
+              id="email"
+              type="email"
+              placeholder="Enter your email"
               className={`w-full pl-10 pr-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                errors.username
+                errors.email
                   ? "border-red-500 bg-red-50"
                   : "border-gray-200 bg-gray-50/50 hover:bg-white focus:bg-white"
               } text-gray-900 placeholder-gray-500`}
-              {...register("username", {
-                required: "Username is required",
-                minLength: {
-                  value: 3,
-                  message: "Username must be at least 3 characters",
-                },
+              {...register("email", {
+                required: "Email is required",
                 pattern: {
-                  value: /^[a-zA-Z0-9_]+$/,
-                  message:
-                    "Username can only contain letters, numbers, and underscores",
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Please enter a valid email address",
                 },
               })}
             />
           </div>
-          {errors.username && (
-            <p className="mt-1 text-sm text-red-600 animate-shake">
-              {errors.username.message}
+          {errors.email && (
+            <p
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-1 text-sm text-red-600"
+            >
+              {errors.email.message}
             </p>
           )}
         </div>

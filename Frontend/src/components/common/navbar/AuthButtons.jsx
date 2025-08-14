@@ -1,5 +1,7 @@
 import React from "react";
 import { LogOut, LogIn, UserPlus } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../../utils/auth";
 
 const AuthButtons = ({
   isMobile = false,
@@ -10,6 +12,8 @@ const AuthButtons = ({
   setIsMobileMenuOpen,
   setIsUserDropdownOpen,
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <div
       className={`space-y-2 ${
@@ -20,6 +24,7 @@ const AuthButtons = ({
         <button
           onClick={() => {
             setIsLoggedIn(false);
+            logOut(dispatch); // Pass dispatch to clear Redux state
             if (isMobile) setIsMobileMenuOpen(false);
             setIsUserDropdownOpen(false);
           }}

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { AuthModal } from "../../auth";
@@ -11,9 +12,11 @@ import {
   MobileMenuButton,
 } from "./index";
 import { categories, navigationItems, mockData } from "./constants";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   // State management
+  const user = useSelector((state) => state.user);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
@@ -22,7 +25,7 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authView, setAuthView] = useState("login");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(user !== null);
 
   // Effects
   useEffect(() => {
@@ -33,6 +36,11 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Sync local isLoggedIn state with Redux user state
+  useEffect(() => {
+    setIsLoggedIn(user.user !== null);
+  }, [user.user]);
 
   useEffect(() => {
     if (!isUserDropdownOpen) return;
