@@ -1,17 +1,16 @@
 import Product from "../models/products.js";
-
 const getProducts = async (req, res) => {
     try {
         // Extract query parameters
-        const { 
-            category, 
-            minPrice, 
-            maxPrice, 
-            search, 
-            sort = 'createdAt', 
-            order = 'desc', 
-            page = 1, 
-            limit = 10 
+        const {
+            category,
+            minPrice,
+            maxPrice,
+            search,
+            sort = 'createdAt',
+            order = 'desc',
+            page = 1,
+            limit = 10
         } = req.query;
 
         // Build filter object
