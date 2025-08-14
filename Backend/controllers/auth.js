@@ -140,6 +140,19 @@ const loginUser = async (req, res) => {
         res.status(400).json({ message: "Error logging in user", error: error.message });
     }
 }
+const logOut = async (req, res) => {
+    try {
+        // Clear the auth token cookie with the same options used when setting it
+        const cookieOptions = getCookieOptions();
+        // Override maxAge to expire immediately
+        cookieOptions.maxAge = 0;
+
+        res.clearCookie('authToken', cookieOptions);
+        res.status(200).json({ message: "User logged out successfully" });
+    } catch (error) {
+        res.status(400).json({ message: "Error logging out user", error: error.message });
+    }
+};
 
 // Verify token for automatic login
 const verifyTokenRoute = async (req, res) => {
@@ -165,4 +178,4 @@ const verifyTokenRoute = async (req, res) => {
     }
 }
 
-export { registerUser, loginUser, verifyTokenRoute };
+export { registerUser, loginUser, logOut, verifyTokenRoute };
