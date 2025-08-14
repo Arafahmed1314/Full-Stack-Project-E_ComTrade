@@ -4,8 +4,6 @@
 
 Complete API documentation for EtRaDe e-commerce platform. This document helps frontend developers understand which APIs to use and when.
 
-## ✨ Latest Updates (Phase 4)
-
 **🆕 Wishlist System** - Complete wishlist functionality:
 
 - **Add to Wishlist**: Save products for later purchase
