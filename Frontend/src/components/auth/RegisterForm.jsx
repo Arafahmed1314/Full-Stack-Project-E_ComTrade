@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import SocialButtons from "./SocialButtons";
@@ -275,19 +276,19 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             className="ml-3 text-sm text-gray-600 leading-5"
           >
             I agree to the{" "}
-            <a
-              href="#"
+            <Link
+              to="#"
               className="text-blue-600 hover:text-blue-500 font-medium"
             >
               Terms of Service
-            </a>{" "}
+            </Link>{" "}
             and{" "}
-            <a
-              href="#"
+            <Link
+              to="#"
               className="text-blue-600 hover:text-blue-500 font-medium"
             >
               Privacy Policy
-            </a>
+            </Link>
           </label>
         </div>
         {errors.agreeToTerms && (

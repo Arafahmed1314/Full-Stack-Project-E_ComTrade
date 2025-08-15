@@ -45,7 +45,6 @@ const ProductShowcase = ({ products }) => {
           {products.slice(5, maxItems + 5)?.map((product, index) => (
             <div
               key={product.id}
-              onClick={() => navigate(`/products/${product.id}`)}
               className="animate-slideInUp"
               style={{
                 animationDelay: `${index * 100}ms`,

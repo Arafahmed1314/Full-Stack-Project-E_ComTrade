@@ -6,6 +6,7 @@ const getProducts = async (req, res) => {
             category,
             minPrice,
             maxPrice,
+            rating,
             search,
             sort = 'createdAt',
             order = 'desc',
@@ -26,6 +27,11 @@ const getProducts = async (req, res) => {
             filter.price = {};
             if (minPrice) filter.price.$gte = Number(minPrice);
             if (maxPrice) filter.price.$lte = Number(maxPrice);
+        }
+
+        // Rating filtering (products with rating greater than or equal to specified rating)
+        if (rating) {
+            filter['rating.rate'] = { $gte: Number(rating) };
         }
 
         // Search in title and description

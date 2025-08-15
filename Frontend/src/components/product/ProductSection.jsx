@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import ProductFilter from "./ProductFilter";
+
 import {
   Filter,
   Search,
@@ -13,28 +14,32 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const ProductSection = ({ products, productPagination }) => {
-  // const [products] = useState(productsData.products || []);
-  const [filteredProducts, setFilteredProducts] = useState(products || []);
-
+const ProductSection = ({
+  products,
+  productPagination,
+  isLoading,
+  onFilterChange,
+  onSortChange,
+  onSearchChange,
+  onClearFilters,
+  currentFilters,
+}) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(currentFilters?.search || "");
   const [sortBy, setSortBy] = useState("featured");
   const [currentPage, setCurrentPage] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Use client-side pagination for filtered/sorted products
+  // Use client-side pagination for the products received from backend
   const productsPerPage = 12;
-  const totalPages = Math.ceil(
-    (filteredProducts?.length || 0) / productsPerPage
-  );
+  const totalPages = Math.ceil((products?.length || 0) / productsPerPage);
 
   // Calculate which products to show for current page
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = Array.isArray(filteredProducts)
-    ? filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct)
+  const currentProducts = Array.isArray(products)
+    ? products.slice(indexOfFirstProduct, indexOfLastProduct)
     : [];
 
   // Check if device is mobile
@@ -50,6 +55,43 @@ const ProductSection = ({ products, productPagination }) => {
   }, []);
   // console.log(filteredProducts);
 
+  // Handle search input changes
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    // Debounce search to avoid too many API calls
+    clearTimeout(window.searchTimeout);
+    window.searchTimeout = setTimeout(() => {
+      if (onSearchChange) {
+        onSearchChange(query);
+      }
+    }, 500);
+  };
+
+  // Handle sort changes
+  const handleSortChange = (newSortBy) => {
+    setSortBy(newSortBy);
+    if (onSortChange) {
+      const [sort, order] =
+        newSortBy === "price-low"
+          ? ["price", "asc"]
+          : newSortBy === "price-high"
+          ? ["price", "desc"]
+          : newSortBy === "rating"
+          ? ["rating.rate", "desc"]
+          : ["createdAt", "desc"];
+      onSortChange(sort, order);
+    }
+  };
+
+  // Handle filter changes from ProductFilter
+  const handleFilterChange = (filters) => {
+    if (onFilterChange) {
+      onFilterChange(filters);
+    }
+    setCurrentPage(1); // Reset to first page when filters change
+  };
+
   const sortOptions = [
     { value: "featured", label: "Featured" },
     { value: "price-low", label: "Price: Low to High" },
@@ -58,37 +100,6 @@ const ProductSection = ({ products, productPagination }) => {
     { value: "newest", label: "Newest First" },
     { value: "bestseller", label: "Best Sellers" },
   ];
-
-  useEffect(() => {
-    let filtered = Array.isArray(products) ? [...products] : [];
-
-    // Apply search filter
-    if (searchQuery) {
-      filtered = filtered.filter(
-        (product) =>
-          product?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product?.category?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    // Apply sorting
-    switch (sortBy) {
-      case "price-low":
-        filtered = filtered.sort((a, b) => (a?.price || 0) - (b?.price || 0));
-        break;
-      case "price-high":
-        filtered = filtered.sort((a, b) => (b?.price || 0) - (a?.price || 0));
-        break;
-      case "rating":
-        filtered = filtered.sort((a, b) => (b?.rating || 0) - (a?.rating || 0));
-        break;
-      default:
-        break;
-    }
-
-    setFilteredProducts(filtered);
-    setCurrentPage(1); // Reset to first page when filters change
-  }, [searchQuery, sortBy, products]);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -105,8 +116,8 @@ const ProductSection = ({ products, productPagination }) => {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">All Products</h1>
               <p className="text-gray-600 mt-1">
-                Showing {filteredProducts?.length || 0} of{" "}
-                {products?.length || 0} products
+                Showing {products?.length || 0} of {products?.length || 0}{" "}
+                products
               </p>
             </div>
 
@@ -117,7 +128,7 @@ const ProductSection = ({ products, productPagination }) => {
                 type="text"
                 placeholder="Search products..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               {searchQuery && (
@@ -183,8 +194,12 @@ const ProductSection = ({ products, productPagination }) => {
                       </button>
                     </div>
                     <ProductFilter
+                      products={products}
                       isOpen={true}
                       onClose={() => setIsFilterOpen(false)}
+                      onFilterChange={handleFilterChange}
+                      onClearFilters={onClearFilters}
+                      currentFilters={currentFilters}
                     />
                   </div>
                 </motion.div>
@@ -219,7 +234,7 @@ const ProductSection = ({ products, productPagination }) => {
                   <div className="relative">
                     <select
                       value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
+                      onChange={(e) => handleSortChange(e.target.value)}
                       className="appearance-none bg-white border border-gray-300 rounded-lg py-2 pl-3 pr-8 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       {sortOptions.map((option) => (
@@ -285,6 +300,7 @@ const ProductSection = ({ products, productPagination }) => {
                   >
                     {currentProducts.map((product, index) => (
                       <motion.div
+                        className="cursor-pointer"
                         key={product.id}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -310,11 +326,8 @@ const ProductSection = ({ products, productPagination }) => {
                   >
                     <div className="text-sm text-gray-600">
                       Showing {indexOfFirstProduct + 1} to{" "}
-                      {Math.min(
-                        indexOfLastProduct,
-                        filteredProducts?.length || 0
-                      )}{" "}
-                      of {filteredProducts?.length || 0} products
+                      {Math.min(indexOfLastProduct, products?.length || 0)} of{" "}
+                      {products?.length || 0} products
                     </div>
                     <nav className="flex items-center space-x-1">
                       <button

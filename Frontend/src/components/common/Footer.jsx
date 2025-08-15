@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Facebook,
   Twitter,
@@ -91,12 +92,12 @@ const Footer = () => {
                 "Size Guide",
               ].map((link) => (
                 <li key={link}>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300"
                   >
                     {link}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -121,12 +122,12 @@ const Footer = () => {
                 "Beauty",
               ].map((category) => (
                 <li key={category}>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300"
                   >
                     {category}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

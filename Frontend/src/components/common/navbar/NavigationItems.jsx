@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
@@ -54,9 +55,9 @@ const NavigationItems = ({
                     }`}
                   >
                     {categories.map((category) => (
-                      <a
+                      <Link
                         key={category}
-                        href={`/category/${category
+                        to={`/category/${category
                           .toLowerCase()
                           .replace(/\s+/g, "-")}`}
                         className={`block text-gray-700 hover:text-blue-600 hover:bg-blue-50/50 transition-colors duration-200 ${
@@ -64,15 +65,15 @@ const NavigationItems = ({
                         }`}
                       >
                         {category}
-                      </a>
+                      </Link>
                     ))}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
           ) : (
-            <a
-              href={item.href}
+            <Link
+              to={item.href}
               className={`flex items-center text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 ${
                 isMobile
                   ? "space-x-2 px-3 py-2 hover:bg-blue-50/50 rounded-lg"
@@ -81,7 +82,7 @@ const NavigationItems = ({
             >
               <item.icon className="w-4 h-4" />
               <span>{item.name}</span>
-            </a>
+            </Link>
           )}
         </div>
       ))}
