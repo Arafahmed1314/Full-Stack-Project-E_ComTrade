@@ -36,7 +36,6 @@ export async function authProvider(authData, url, dispatch, actionType, onSucces
 
             // Call success callback if provided - added delay to ensure state is updated
             if (onSuccess) {
-                console.log("Auth success - calling callback");
                 setTimeout(() => {
                     onSuccess();
                 }, 100);
@@ -54,7 +53,8 @@ export async function authProvider(authData, url, dispatch, actionType, onSucces
 }
 export async function logOut(dispatch) {
     try {
-        const response = await fetch(`http://localhost:5000/api/auth/logout`, {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
             method: "POST",
             credentials: "include",
         });

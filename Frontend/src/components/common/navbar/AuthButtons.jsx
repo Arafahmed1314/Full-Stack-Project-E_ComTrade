@@ -41,7 +41,6 @@ const AuthButtons = ({
         <>
           <button
             onClick={() => {
-              console.log("Sign In button clicked");
               setAuthView("login");
               setIsAuthModalOpen(true);
               if (isMobile) setIsMobileMenuOpen(false);
@@ -58,7 +57,6 @@ const AuthButtons = ({
           </button>
           <button
             onClick={() => {
-              console.log("Sign Up button clicked");
               setAuthView("register");
               setIsAuthModalOpen(true);
               if (isMobile) setIsMobileMenuOpen(false);

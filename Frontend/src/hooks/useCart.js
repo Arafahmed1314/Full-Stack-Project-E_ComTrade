@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { setLoading, setError, setCartData, clearCart } from '../../redux/cartSlice';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 // Configure axios to always send cookies
 axios.defaults.withCredentials = true;
@@ -23,7 +23,7 @@ const useCart = (dispatch) => {
                 return;
             }
 
-            const response = await axios.get(`${API_BASE_URL}/cart`);
+            const response = await axios.get(`${API_BASE_URL}/api/cart`);
             dispatch(setCartData(response.data));
         } catch (err) {
             dispatch(setError(err.response?.data?.message || 'Failed to fetch cart'));
@@ -44,7 +44,7 @@ const useCart = (dispatch) => {
                 throw new Error('Please login to add items to cart');
             }
 
-            const response = await axios.post(`${API_BASE_URL}/cart/add`, {
+            const response = await axios.post(`${API_BASE_URL}/api/cart/add`, {
                 productId,
                 quantity
             });
@@ -76,7 +76,7 @@ const useCart = (dispatch) => {
                 throw new Error('Please login to update cart');
             }
 
-            await axios.put(`${API_BASE_URL}/cart/item/${itemId}`, {
+            await axios.put(`${API_BASE_URL}/api/cart/item/${itemId}`, {
                 quantity
             });
 
@@ -103,7 +103,7 @@ const useCart = (dispatch) => {
                 throw new Error('Please login to remove items');
             }
 
-            await axios.delete(`${API_BASE_URL}/cart/item/${itemId}`);
+            await axios.delete(`${API_BASE_URL}/api/cart/item/${itemId}`);
 
             // Refresh cart after removing
             await fetchCart();
@@ -129,7 +129,7 @@ const useCart = (dispatch) => {
                 throw new Error('Please login to clear cart');
             }
 
-            await axios.delete(`${API_BASE_URL}/cart`);
+            await axios.delete(`${API_BASE_URL}/api/cart`);
 
             dispatch(clearCart());
             toast.success('Cart cleared successfully!');
@@ -149,7 +149,7 @@ const useCart = (dispatch) => {
         try {
             if (!user) return { totalItems: 0, totalPrice: 0 };
 
-            const response = await axios.get(`${API_BASE_URL}/cart/summary`);
+            const response = await axios.get(`${API_BASE_URL}/api/cart/summary`);
             return response.data;
         } catch (err) {
             console.error('Failed to get cart summary:', err);

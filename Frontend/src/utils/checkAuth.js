@@ -3,7 +3,8 @@ import { setUser } from '../../redux/userSlice';
 
 export async function checkAuth(dispatch) {
     try {
-        const res = await fetch(`http://localhost:5000/api/auth/verify-token`, {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${API_BASE_URL}/api/auth/verify-token`, {
             credentials: "include", // Send cookies
         });
         const data = await res.json();

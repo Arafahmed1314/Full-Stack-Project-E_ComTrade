@@ -17,13 +17,11 @@ const AuthModal = ({ isOpen, onClose, initialView = "login" }) => {
 
   // Handle successful register - switch to login
   const handleSuccessfulRegister = () => {
-    console.log("handleSuccessfulRegister called - switching to login");
     setCurrentView("login");
   };
 
   // Handle successful login - close modal and redirect to home
   const handleSuccessfulLogin = () => {
-    console.log("handleSuccessfulLogin called - closing modal and redirecting");
     onClose();
     navigate("/"); // Redirect to home page
   };

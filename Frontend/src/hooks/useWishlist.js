@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { setLoading, setError, setWishlistData, clearWishlist } from '../../redux/wishlistSlice';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 // Configure axios to always send cookies
 axios.defaults.withCredentials = true;
@@ -23,7 +23,7 @@ const useWishlist = (dispatch) => {
                 return;
             }
 
-            const response = await axios.get(`${API_BASE_URL}/wishlist`);
+            const response = await axios.get(`${API_BASE_URL}/api/wishlist`);
             dispatch(setWishlistData(response.data));
         } catch (err) {
             dispatch(setError(err.response?.data?.message || 'Failed to fetch wishlist'));
@@ -44,7 +44,7 @@ const useWishlist = (dispatch) => {
                 throw new Error('Please login to add items to wishlist');
             }
 
-            const response = await axios.post(`${API_BASE_URL}/wishlist/add`, {
+            const response = await axios.post(`${API_BASE_URL}/api/wishlist/add`, {
                 productId
             });
 
@@ -75,7 +75,7 @@ const useWishlist = (dispatch) => {
                 throw new Error('Please login to remove items');
             }
 
-            await axios.delete(`${API_BASE_URL}/wishlist/item/${productId}`);
+            await axios.delete(`${API_BASE_URL}/api/wishlist/item/${productId}`);
 
             // Refresh wishlist after removing
             await fetchWishlist();
@@ -102,7 +102,7 @@ const useWishlist = (dispatch) => {
                 throw new Error('Please login to clear wishlist');
             }
 
-            await axios.delete(`${API_BASE_URL}/wishlist`);
+            await axios.delete(`${API_BASE_URL}/api/wishlist`);
 
             dispatch(clearWishlist());
             toast.success('Wishlist cleared successfully!');

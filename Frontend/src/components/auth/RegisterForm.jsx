@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
@@ -22,9 +23,11 @@ const RegisterForm = ({ onSwitchToLogin, onSuccessfulRegister }) => {
   const password = watch("password", "");
 
   const onSubmit = async (data) => {
+    const API_BASE_URL =
+      import.meta.env.VITE_API_URL || "http://localhost:5000";
     await authProvider(
       data,
-      `http://localhost:5000/api/auth/register`,
+      `${API_BASE_URL}/api/auth/register`,
       dispatch,
       "register",
       onSuccessfulRegister

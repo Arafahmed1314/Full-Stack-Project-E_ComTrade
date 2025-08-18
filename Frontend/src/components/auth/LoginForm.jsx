@@ -15,9 +15,11 @@ const LoginForm = ({ onSwitchToRegister, onSuccessfulLogin }) => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    const API_BASE_URL =
+      import.meta.env.VITE_API_URL || "http://localhost:5000";
     await authProvider(
       data,
-      `http://localhost:5000/api/auth/login`,
+      `${API_BASE_URL}/api/auth/login`,
       dispatch,
       "login",
       onSuccessfulLogin
