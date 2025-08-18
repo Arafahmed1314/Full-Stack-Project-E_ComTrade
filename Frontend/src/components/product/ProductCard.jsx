@@ -2,6 +2,7 @@ import React from "react";
 import { Heart, Star, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AddToCartButton from "../common/AddToCartButton";
+import AddToWishlistButton from "../common/AddToWishlistButton";
 const ProductCard = ({ product, viewMode = "grid" }) => {
   const navigate = useNavigate();
 
@@ -66,9 +67,11 @@ const ProductCard = ({ product, viewMode = "grid" }) => {
               )}
             </div>
             <div className="flex items-center space-x-2">
-              <button className="p-2 text-gray-600 hover:text-red-500 transition-colors">
-                <Heart className="w-4 h-4" />
-              </button>
+              <AddToWishlistButton
+                productId={product._id || product.id}
+                variant="icon"
+                size="sm"
+              />
               <AddToCartButton
                 productId={product._id || product.id}
                 size="sm"
@@ -84,11 +87,9 @@ const ProductCard = ({ product, viewMode = "grid" }) => {
   return (
     <div className="group relative bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
       {/* Product Image Container */}
-      <div
-        onClick={() => navigate(`/products/${product.id}`)}
-        className="relative overflow-hidden cursor-pointer"
-      >
+      <div className="relative overflow-hidden cursor-pointer">
         <img
+          onClick={() => navigate(`/products/${product.id}`)}
           src={product.images[0]}
           alt={product.title}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
@@ -103,9 +104,12 @@ const ProductCard = ({ product, viewMode = "grid" }) => {
 
         {/* Quick Actions */}
         <div className="absolute top-2 right-2 flex flex-col space-y-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors">
-            <Heart className="w-3 h-3 text-gray-600 hover:text-red-500" />
-          </button>
+          <AddToWishlistButton
+            productId={product._id || product.id}
+            variant="icon"
+            size="sm"
+            className="bg-white rounded-full shadow-md hover:bg-gray-50"
+          />
           <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors">
             <Eye className="w-3 h-3 text-gray-600 hover:text-blue-500" />
           </button>

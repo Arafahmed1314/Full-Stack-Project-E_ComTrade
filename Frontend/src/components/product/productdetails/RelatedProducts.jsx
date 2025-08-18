@@ -1,7 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Star, ShoppingCart, Heart } from "lucide-react";
+import { Star, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
+import AddToCartButton from "../../common/AddToCartButton";
+import AddToWishlistButton from "../../common/AddToWishlistButton";
 
 const RelatedProducts = ({ currentProduct, allProducts }) => {
   // Filter related products based on category, excluding current product
@@ -63,9 +65,12 @@ const RelatedProducts = ({ currentProduct, allProducts }) => {
 
               {/* Quick Actions */}
               <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button className="bg-white p-2 rounded-full shadow-md hover:bg-gray-50 mb-2 block">
-                  <Heart className="w-4 h-4 text-gray-600" />
-                </button>
+                <AddToWishlistButton 
+                  productId={product._id || product.id}
+                  className="bg-white p-2 rounded-full shadow-md hover:bg-gray-50 mb-2 block"
+                  variant="icon"
+                  size="sm"
+                />
               </div>
 
               {/* Quick View Overlay */}
@@ -110,9 +115,14 @@ const RelatedProducts = ({ currentProduct, allProducts }) => {
                     </span>
                   )}
                 </div>
-                <button className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <AddToCartButton 
+                  productId={product._id || product.id}
+                  className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  variant="icon"
+                  size="sm"
+                >
                   <ShoppingCart className="w-4 h-4" />
-                </button>
+                </AddToCartButton>
               </div>
             </div>
           </motion.div>

@@ -11,11 +11,24 @@ import {
   RefreshCw,
   Award,
 } from "lucide-react";
+import AddToCartButton from "../../common/AddToCartButton";
+import AddToWishlistButton from "../../common/AddToWishlistButton";
 
 const ProductInfo = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(0);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+
+  // Safety check
+  if (!product) {
+    return <div className="p-4">Loading product information...</div>;
+  }
+
+  // Get product ID (handle both _id and id)
+  const productId = product._id || product.id;
+  
+  if (!productId) {
+    return <div className="p-4 text-red-500">Error: Product ID not found</div>;
+  }
 
   const discountPercentage = Math.round(
     ((product.originalPrice - product.price) / product.originalPrice) * 100
@@ -144,22 +157,23 @@ const ProductInfo = ({ product }) => {
       {/* Action Buttons */}
       <div className="space-y-4">
         <div className="flex space-x-4">
-          <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-colors">
-            <ShoppingCart className="w-5 h-5" />
-            <span>Add to Cart</span>
-          </button>
-          <button
-            onClick={() => setIsWishlisted(!isWishlisted)}
-            className={`p-4 rounded-lg border-2 transition-all ${
-              isWishlisted
-                ? "border-red-500 bg-red-50 text-red-500"
-                : "border-gray-300 hover:border-gray-400"
-            }`}
-          >
-            <Heart
-              className={`w-5 h-5 ${isWishlisted ? "fill-current" : ""}`}
-            />
-          </button>
+          <div className="flex-1">
+            <AddToCartButton 
+              productId={productId} 
+              quantity={quantity}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-colors"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              <span>Add to Cart</span>
+            </AddToCartButton>
+          </div>
+          
+          <AddToWishlistButton 
+            productId={productId}
+            className="p-4 rounded-lg border-2 transition-all"
+            variant="icon"
+          />
+          
           <button className="p-4 rounded-lg border-2 border-gray-300 hover:border-gray-400 transition-colors">
             <Share2 className="w-5 h-5" />
           </button>

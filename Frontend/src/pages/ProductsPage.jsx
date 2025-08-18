@@ -19,6 +19,7 @@ const ProductsPage = () => {
 
   const products = productsState?.products?.products || [];
   const productData = products.map((product) => ({
+    _id: product._id, // Keep the original _id for cart operations
     id: product.id,
     title: product.title || product.name,
     price: product.price,

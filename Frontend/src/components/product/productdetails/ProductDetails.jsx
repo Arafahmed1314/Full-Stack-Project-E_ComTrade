@@ -37,6 +37,9 @@ const ProductDetails = () => {
         images: foundProduct.images || [foundProduct.image], // Ensure images array exists
         rating: foundProduct.rating?.rate || foundProduct.rating || 0, // Extract rating number
         reviews: foundProduct.rating?.count || 0, // Extract review count
+        // Ensure we preserve both id formats for compatibility
+        id: foundProduct.id,
+        _id: foundProduct._id || foundProduct.id, // Some products might not have _id
       };
 
       setProduct(normalizedProduct);
@@ -56,6 +59,9 @@ const ProductDetails = () => {
           images: p.images || [p.image],
           rating: p.rating?.rate || p.rating || 0,
           reviews: p.rating?.count || 0,
+          // Ensure proper ID fields
+          id: p.id,
+          _id: p._id || p.id,
         }));
       setRelatedProducts(related);
     } else {

@@ -80,9 +80,8 @@ const useCart = (dispatch) => {
                 quantity
             });
 
-            // Refresh cart after updating
+            // Refresh cart after updating (no toast message for quantity changes)
             await fetchCart();
-            toast.success('Cart updated successfully!');
             return true;
         } catch (err) {
             const errorMessage = err.response?.data?.message || 'Failed to update item';

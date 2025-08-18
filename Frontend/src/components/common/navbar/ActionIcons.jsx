@@ -3,26 +3,29 @@ import { Heart, ShoppingCart, User } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useCart from "../../../hooks/useCart";
+import useWishlist from "../../../hooks/useWishlist";
 
 const ActionIcons = ({
-  wishlistCount,
   isUserDropdownOpen,
   setIsUserDropdownOpen,
   isSearchExpanded,
 }) => {
   const user = useSelector((state) => state.user);
   const cart = useSelector((state) => state.cart);
+  const wishlist = useSelector((state) => state.wishlist);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { fetchCart } = useCart(dispatch);
+  const { fetchWishlist } = useWishlist(dispatch);
 
-  // Fetch cart on component mount
+  // Fetch cart and wishlist on component mount
   useEffect(() => {
     if (user.user) {
       fetchCart();
+      fetchWishlist();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.user]); // Removed fetchCart from dependencies to prevent infinite loop
+  }, [user.user]); // Removed fetchCart and fetchWishlist from dependencies to prevent infinite loop
 
   const handleCartClick = () => {
     navigate("/cart");
@@ -43,9 +46,9 @@ const ActionIcons = ({
         className="relative p-3 bg-white/70 backdrop-blur-sm rounded-full hover:bg-white/90 transition-all duration-200 hover:scale-110 group shadow-lg"
       >
         <Heart className="w-5 h-5 text-gray-600 group-hover:text-red-500 transition-colors duration-200" />
-        {wishlistCount > 0 && (
+        {wishlist.totalItems > 0 && (
           <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold shadow-lg">
-            {wishlistCount}
+            {wishlist.totalItems}
           </span>
         )}
       </button>

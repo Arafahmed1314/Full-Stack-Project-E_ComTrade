@@ -6,8 +6,8 @@ import AddToCartButton from "../common/AddToCartButton";
 
 const WishlistSection = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state?.user);
-  const wishlist = useSelector((state) => state?.wishlist);
+  const user = useSelector((state) => state.user);
+  const wishlist = useSelector((state) => state.wishlist);
   const { fetchWishlist, removeFromWishlist } = useWishlist(dispatch);
 
   // Fetch wishlist on component mount
@@ -18,12 +18,12 @@ const WishlistSection = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.user]);
 
-  const handleRemoveFromWishlist = (productId) => {
-    removeFromWishlist(productId);
+  const handleRemoveFromWishlist = (itemId) => {
+    removeFromWishlist(itemId);
   };
 
   // Loading state
-  if (wishlist?.loading && wishlist?.items?.length === 0) {
+  if (wishlist.loading && wishlist.items.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
@@ -35,7 +35,7 @@ const WishlistSection = () => {
   }
 
   // Empty wishlist state
-  if (!wishlist?.loading && wishlist?.items?.length === 0) {
+  if (!wishlist.loading && wishlist.items.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-6">
@@ -75,7 +75,7 @@ const WishlistSection = () => {
 
         {/* Wishlist Items */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {wishlist?.items?.map((item) => (
+          {wishlist.items.map((item) => (
             <div
               key={item._id}
               className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-200"
@@ -177,22 +177,22 @@ const WishlistSection = () => {
                     className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 flex items-center justify-center"
                     size="md"
                   >
+                    <ShoppingCart className="w-5 h-5 mr-2" />
                     Add to Cart
                   </AddToCartButton>
 
                   {/* Secondary Actions */}
                   <div className="grid grid-cols-2 gap-2">
                     <button
-                      onClick={() => {
-                        const productId = item.product?.id || item.product?._id?.toString();
-                        window.location.href = `/products/${productId}`;
-                      }}
+                      onClick={() =>
+                        (window.location.href = `/products/${item.product?._id}`)
+                      }
                       className="bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium py-2.5 px-3 rounded-lg transition-all duration-200 text-sm border border-gray-200 hover:border-gray-300"
                     >
                       View Details
                     </button>
                     <button
-                      onClick={() => handleRemoveFromWishlist(item.product?._id)}
+                      onClick={() => handleRemoveFromWishlist(item._id)}
                       className="bg-red-50 hover:bg-red-100 text-red-600 font-medium py-2.5 px-3 rounded-lg transition-all duration-200 text-sm border border-red-200 hover:border-red-300"
                     >
                       Remove
