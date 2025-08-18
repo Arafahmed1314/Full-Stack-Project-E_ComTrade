@@ -65,7 +65,7 @@ const RelatedProducts = ({ currentProduct, allProducts }) => {
 
               {/* Quick Actions */}
               <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <AddToWishlistButton 
+                <AddToWishlistButton
                   productId={product._id || product.id}
                   className="bg-white p-2 rounded-full shadow-md hover:bg-gray-50 mb-2 block"
                   variant="icon"
@@ -115,7 +115,7 @@ const RelatedProducts = ({ currentProduct, allProducts }) => {
                     </span>
                   )}
                 </div>
-                <AddToCartButton 
+                <AddToCartButton
                   productId={product._id || product.id}
                   className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-colors"
                   variant="icon"

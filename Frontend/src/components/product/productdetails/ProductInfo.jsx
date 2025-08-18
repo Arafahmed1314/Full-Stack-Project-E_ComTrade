@@ -25,7 +25,7 @@ const ProductInfo = ({ product }) => {
 
   // Get product ID (handle both _id and id)
   const productId = product._id || product.id;
-  
+
   if (!productId) {
     return <div className="p-4 text-red-500">Error: Product ID not found</div>;
   }
@@ -158,8 +158,8 @@ const ProductInfo = ({ product }) => {
       <div className="space-y-4">
         <div className="flex space-x-4">
           <div className="flex-1">
-            <AddToCartButton 
-              productId={productId} 
+            <AddToCartButton
+              productId={productId}
               quantity={quantity}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-colors"
             >
@@ -167,13 +167,13 @@ const ProductInfo = ({ product }) => {
               <span>Add to Cart</span>
             </AddToCartButton>
           </div>
-          
-          <AddToWishlistButton 
+
+          <AddToWishlistButton
             productId={productId}
             className="p-4 rounded-lg border-2 transition-all"
             variant="icon"
           />
-          
+
           <button className="p-4 rounded-lg border-2 border-gray-300 hover:border-gray-400 transition-colors">
             <Share2 className="w-5 h-5" />
           </button>

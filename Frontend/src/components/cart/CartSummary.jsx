@@ -235,14 +235,11 @@ const CartSummary = ({ subtotal, total }) => {
           <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center text-xs font-bold text-blue-600">
             VISA
           </div>
-          <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center text-xs font-bold text-red-600">
-            MC
+          <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center text-xs font-bold text-pink-600">
+            bKash
           </div>
-          <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center text-xs font-bold text-blue-800">
-            AMEX
-          </div>
-          <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center text-xs font-bold text-yellow-600">
-            PP
+          <div className="w-12 h-8 bg-white rounded border border-gray-200 flex items-center justify-center text-xs font-bold text-purple-600">
+            Rocket
           </div>
         </div>
       </div>

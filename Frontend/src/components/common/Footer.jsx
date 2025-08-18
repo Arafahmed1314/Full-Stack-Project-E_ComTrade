@@ -14,6 +14,8 @@ import {
   RefreshCw,
   Heart,
   ArrowUp,
+  Github,
+  Linkedin,
 } from "lucide-react";
 
 const Footer = () => {
@@ -49,28 +51,36 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://www.facebook.com/Araf1314"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-blue-400 transition-colors"
               >
                 <Facebook className="w-5 h-5" />
               </a>
               <a
-                href="#"
-                className="text-gray-400 hover:text-blue-400 transition-colors"
+                href="https://www.linkedin.com/in/md-naimul-islam-068b9018b/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-blue-500 transition-colors"
               >
-                <Twitter className="w-5 h-5" />
+                <Linkedin className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/araf_ahmed1314/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-pink-400 transition-colors"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="#"
-                className="text-gray-400 hover:text-red-400 transition-colors"
+                href="https://github.com/Arafahmed1314"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-gray-300 transition-colors"
               >
-                <Youtube className="w-5 h-5" />
+                <Github className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -142,16 +152,16 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-blue-400 flex-shrink-0" />
                 <span className="text-gray-400">
-                  123 Commerce Street, Business District, City 12345
+                  Dhaka, Bangladesh
                 </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <span className="text-gray-400">+1 (555) 123-4567</span>
+                <span className="text-gray-400">+880 1923531755</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <span className="text-gray-400">support@etrade.com</span>
+                <span className="text-gray-400">nayemhasan1314@gmail.com</span>
               </div>
             </div>
 
@@ -220,17 +230,14 @@ const Footer = () => {
             <div className="flex items-center space-x-4">
               <span className="text-gray-400">Accepted Payments:</span>
               <div className="flex space-x-2">
-                <div className="bg-blue-600 p-2 rounded text-white font-bold text-xs flex items-center justify-center w-10 h-8">
+                <div className="bg-blue-600 p-2 rounded text-white font-bold text-xs flex items-center justify-center w-12 h-8">
                   VISA
                 </div>
-                <div className="bg-red-600 p-2 rounded text-white font-bold text-xs flex items-center justify-center w-10 h-8">
-                  MC
+                <div className="bg-pink-600 p-2 rounded text-white font-bold text-xs flex items-center justify-center w-12 h-8">
+                  bKash
                 </div>
-                <div className="bg-blue-800 p-2 rounded text-white font-bold text-xs flex items-center justify-center w-10 h-8">
-                  AMEX
-                </div>
-                <div className="bg-yellow-500 p-2 rounded text-white font-bold text-xs flex items-center justify-center w-10 h-8">
-                  PP
+                <div className="bg-purple-600 p-2 rounded text-white font-bold text-xs flex items-center justify-center w-12 h-8">
+                  Rocket
                 </div>
               </div>
             </div>

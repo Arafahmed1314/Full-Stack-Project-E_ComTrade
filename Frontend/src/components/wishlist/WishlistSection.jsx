@@ -184,7 +184,8 @@ const WishlistSection = () => {
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => {
-                        const productId = item.product?.id || item.product?._id?.toString();
+                        const productId =
+                          item.product?.id || item.product?._id?.toString();
                         window.location.href = `/products/${productId}`;
                       }}
                       className="bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium py-2.5 px-3 rounded-lg transition-all duration-200 text-sm border border-gray-200 hover:border-gray-300"
@@ -192,7 +193,9 @@ const WishlistSection = () => {
                       View Details
                     </button>
                     <button
-                      onClick={() => handleRemoveFromWishlist(item.product?._id)}
+                      onClick={() =>
+                        handleRemoveFromWishlist(item.product?._id)
+                      }
                       className="bg-red-50 hover:bg-red-100 text-red-600 font-medium py-2.5 px-3 rounded-lg transition-all duration-200 text-sm border border-red-200 hover:border-red-300"
                     >
                       Remove
