@@ -26,7 +26,7 @@ const generateAuthToken = (user) => {
 // Cookie options for secure token storage
 const getCookieOptions = () => {
     const isProduction = process.env.NODE_ENV === 'production';
-    
+
     return {
         httpOnly: true, // Prevents XSS attacks
         secure: isProduction, // HTTPS only in production
