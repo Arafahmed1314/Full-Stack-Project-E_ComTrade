@@ -66,7 +66,7 @@ const addToWishlist = async (req, res) => {
 const getWishlist = async (req, res) => {
     try {
         const wishlist = await Wishlist.findOne({ user: req.user.id })
-            .populate('items.product', 'title price images category rating');
+            .populate('items.product', 'id title price images category rating originalPrice');
 
         if (!wishlist || wishlist.items.length === 0) {
             return res.status(200).json({
@@ -95,7 +95,7 @@ const removeFromWishlist = async (req, res) => {
 
     try {
         const wishlist = await Wishlist.findOne({ user: req.user.id })
-            .populate('items.product', 'title price images category');
+            .populate('items.product', 'id title price images category originalPrice');
 
         if (!wishlist) {
             return res.status(404).json({ message: "Wishlist not found" });
