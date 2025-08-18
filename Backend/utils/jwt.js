@@ -25,12 +25,15 @@ const generateAuthToken = (user) => {
 
 // Cookie options for secure token storage
 const getCookieOptions = () => {
+    const isProduction = process.env.NODE_ENV === 'production';
+    
     return {
         httpOnly: true, // Prevents XSS attacks
-        secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-        sameSite: 'strict', // CSRF protection
+        secure: isProduction, // HTTPS only in production
+        sameSite: isProduction ? 'none' : 'lax', // Allow cross-site cookies in production
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
-        path: '/' // Available on all routes
+        path: '/', // Available on all routes
+        domain: isProduction ? undefined : undefined // Let browser set the domain
     };
 };
 

@@ -16,10 +16,20 @@ import cookieParser from "cookie-parser";
 import { verifyToken } from "./middlewares/authMiddleware.js";
 
 const app = express();
+
+// CORS configuration for cross-site deployment
 app.use(cors({
-    origin: `${process.env.CROSS_ORIGIN}` || "http://localhost:5173",
-    credentials: true
+    origin: [
+        process.env.CROSS_ORIGIN || "http://localhost:5173",
+        "http://localhost:5173", // Keep localhost for development
+        "https://full-stack-project-e-com-trade.vercel.app" // Your Vercel deployment
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    exposedHeaders: ['Set-Cookie']
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
