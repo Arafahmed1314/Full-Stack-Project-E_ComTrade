@@ -19,6 +19,7 @@ function App() {
     checkAuth(dispatch);
     fetchProductFromApi(dispatch);
   }, [dispatch]);
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen">

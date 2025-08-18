@@ -10,20 +10,18 @@ import {
   X,
 } from "lucide-react";
 
-const CartSummary = ({
-  subtotal,
-  discount,
-  shipping,
-  tax,
-  total,
-  appliedCoupon,
-  setAppliedCoupon,
-  isCheckingOut,
-  setIsCheckingOut,
-}) => {
+const CartSummary = ({ subtotal, total }) => {
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+  // Calculate values
+  const discount = appliedCoupon ? subtotal * (appliedCoupon.discount || 0) : 0;
+  const shipping = subtotal > 100 ? 0 : 9.99;
+  const tax = (subtotal - discount) * 0.08;
+  const finalTotal = subtotal - discount + shipping + tax;
 
   const validCoupons = {
     SAVE10: { discount: 0.1, description: "10% off your order" },
@@ -106,7 +104,9 @@ const CartSummary = ({
           <div className="border-t border-gray-200 pt-4">
             <div className="flex justify-between text-lg font-bold text-gray-900">
               <span>Total</span>
-              <span className="text-blue-600">${total.toFixed(2)}</span>
+              <span className="text-blue-600">
+                ${(total || finalTotal).toFixed(2)}
+              </span>
             </div>
             <p className="text-sm text-gray-600 mt-1">
               Including all taxes and fees

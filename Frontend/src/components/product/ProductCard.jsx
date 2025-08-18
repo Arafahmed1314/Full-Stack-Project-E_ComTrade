@@ -1,7 +1,7 @@
 import React from "react";
-import { Heart, ShoppingCart, Star, Eye } from "lucide-react";
-
+import { Heart, Star, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import AddToCartButton from "../common/AddToCartButton";
 const ProductCard = ({ product, viewMode = "grid" }) => {
   const navigate = useNavigate();
 
@@ -69,9 +69,11 @@ const ProductCard = ({ product, viewMode = "grid" }) => {
               <button className="p-2 text-gray-600 hover:text-red-500 transition-colors">
                 <Heart className="w-4 h-4" />
               </button>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">
-                Add to Cart
-              </button>
+              <AddToCartButton
+                productId={product._id || product.id}
+                size="sm"
+                className="flex-1"
+              />
             </div>
           </div>
         </div>
@@ -152,9 +154,12 @@ const ProductCard = ({ product, viewMode = "grid" }) => {
         </div>
 
         {/* Add to Cart Button */}
-        <button className="mt-3 w-full bg-gray-100 hover:bg-blue-600 hover:text-white text-gray-700 py-2 px-3 rounded-lg transition-all duration-300 font-medium text-sm">
-          Add to Cart
-        </button>
+        <AddToCartButton
+          productId={product._id || product.id}
+          size="sm"
+          variant="ghost"
+          className="mt-3 w-full hover:bg-blue-600 bg-gray-100 text-gray-700 hover:text-white"
+        />
       </div>
     </div>
   );

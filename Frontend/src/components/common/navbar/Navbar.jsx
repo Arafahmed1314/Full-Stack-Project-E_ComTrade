@@ -108,7 +108,6 @@ const Navbar = () => {
               {/* Action Icons */}
               <ActionIcons
                 wishlistCount={mockData.wishlistCount}
-                cartCount={mockData.cartCount}
                 isUserDropdownOpen={isUserDropdownOpen}
                 setIsUserDropdownOpen={setIsUserDropdownOpen}
                 isSearchExpanded={isSearchExpanded}

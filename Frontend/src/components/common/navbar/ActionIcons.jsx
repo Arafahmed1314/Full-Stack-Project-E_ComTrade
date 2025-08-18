@@ -1,15 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Heart, ShoppingCart, User } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import useCart from "../../../hooks/useCart";
 
 const ActionIcons = ({
   wishlistCount,
-  cartCount,
   isUserDropdownOpen,
   setIsUserDropdownOpen,
   isSearchExpanded,
 }) => {
   const user = useSelector((state) => state.user);
+  const cart = useSelector((state) => state.cart);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { fetchCart } = useCart(dispatch);
+
+  // Fetch cart on component mount
+  useEffect(() => {
+    if (user.user) {
+      fetchCart();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.user]); // Removed fetchCart from dependencies to prevent infinite loop
+
+  const handleCartClick = () => {
+    navigate("/cart");
+  };
+
+  const handleWishlistClick = () => {
+    navigate("/wishlist");
+  };
   return (
     <div
       className={`flex items-center space-x-2 ${
@@ -17,7 +38,10 @@ const ActionIcons = ({
       }`}
     >
       {/* Wishlist */}
-      <button className="relative p-3 bg-white/70 backdrop-blur-sm rounded-full hover:bg-white/90 transition-all duration-200 hover:scale-110 group shadow-lg">
+      <button
+        onClick={handleWishlistClick}
+        className="relative p-3 bg-white/70 backdrop-blur-sm rounded-full hover:bg-white/90 transition-all duration-200 hover:scale-110 group shadow-lg"
+      >
         <Heart className="w-5 h-5 text-gray-600 group-hover:text-red-500 transition-colors duration-200" />
         {wishlistCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold shadow-lg">
@@ -27,11 +51,14 @@ const ActionIcons = ({
       </button>
 
       {/* Cart */}
-      <button className="relative p-3 bg-white/70 backdrop-blur-sm rounded-full hover:bg-white/90 transition-all duration-200 hover:scale-110 group shadow-lg">
+      <button
+        onClick={handleCartClick}
+        className="relative p-3 bg-white/70 backdrop-blur-sm rounded-full hover:bg-white/90 transition-all duration-200 hover:scale-110 group shadow-lg"
+      >
         <ShoppingCart className="w-5 h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-200" />
-        {cartCount > 0 && (
+        {cart.totalItems > 0 && (
           <span className="absolute -top-1 -right-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold shadow-lg">
-            {cartCount}
+            {cart.totalItems}
           </span>
         )}
       </button>

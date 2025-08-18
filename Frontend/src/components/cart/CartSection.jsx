@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Truck, Heart, Shield, Package } from "lucide-react";
 import CartItem from "./CartItem";
@@ -6,91 +6,74 @@ import CartSummary from "./CartSummary";
 import EmptyCart from "./EmptyCart";
 import CartHeader from "./CartHeader";
 import RecommendedItems from "./RecommendedItems";
+import { useSelector, useDispatch } from "react-redux";
+import useCart from "../../hooks/useCart";
 
 const CartSection = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Premium Wireless Headphones",
-      brand: "SoundMaster Pro",
-      price: 299.99,
-      originalPrice: 399.99,
-      quantity: 2,
-      image:
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop",
-      color: "Midnight Black",
-      size: "Universal",
-      inStock: true,
-      rating: 4.8,
-      reviews: 1547,
-      warranty: "2 Years",
-      freeShipping: true,
-    },
-    {
-      id: 2,
-      name: "Smart Fitness Watch",
-      brand: "TechFit Elite",
-      price: 199.99,
-      originalPrice: 249.99,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop",
-      color: "Space Gray",
-      size: "42mm",
-      inStock: true,
-      rating: 4.6,
-      reviews: 892,
-      warranty: "1 Year",
-      freeShipping: true,
-    },
-    {
-      id: 3,
-      name: "Luxury Leather Backpack",
-      brand: "Heritage Craft",
-      price: 149.99,
-      originalPrice: 199.99,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop",
-      color: "Cognac Brown",
-      size: "Large",
-      inStock: false,
-      rating: 4.9,
-      reviews: 2341,
-      warranty: "Lifetime",
-      freeShipping: false,
-    },
-  ]);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const cart = useSelector((state) => state.cart);
+  const { fetchCart, updateQuantity, removeFromCart } = useCart(dispatch);
 
-  const [appliedCoupon, setAppliedCoupon] = useState(null);
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
-
-  const updateQuantity = (id, newQuantity) => {
-    if (newQuantity === 0) {
-      setCartItems(cartItems.filter((item) => item.id !== id));
-    } else {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === id ? { ...item, quantity: newQuantity } : item
-        )
-      );
+  // Fetch cart on component mount
+  useEffect(() => {
+    if (user.user) {
+      fetchCart();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.user]); // Removed fetchCart from dependencies to prevent infinite loop
+
+  // Handle quantity update
+  const handleUpdateQuantity = (itemId, newQuantity) => {
+    if (newQuantity === 0) {
+      return removeFromCart(itemId);
+    }
+    return updateQuantity(itemId, newQuantity);
   };
 
-  const removeItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+  // Handle item removal
+  const handleRemoveItem = (itemId) => {
+    return removeFromCart(itemId);
   };
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+  // Calculate totals (fallback if backend doesn't provide)
+  const subtotal = cart.items.reduce(
+    (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
     0
   );
-  const discount = appliedCoupon ? subtotal * 0.1 : 0;
-  const shipping = subtotal > 100 ? 0 : 9.99;
-  const tax = (subtotal - discount) * 0.08;
-  const total = subtotal - discount + shipping + tax;
 
-  if (cartItems.length === 0) {
+  // Loading state
+  if (cart.loading && cart.items.length === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your cart...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (cart.error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-500 text-xl mb-4">⚠️</div>
+          <p className="text-red-600 mb-4">{cart.error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Empty cart check
+  if (cart.items.length === 0) {
     return <EmptyCart />;
   }
 
@@ -103,7 +86,7 @@ const CartSection = () => {
       </div>
 
       <div className="relative z-10">
-        <CartHeader itemCount={cartItems.length} />
+        <CartHeader itemCount={cart.totalItems || cart.items.length} />
 
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -132,7 +115,7 @@ const CartSection = () => {
               </div>
 
               {/* Free Shipping Banner */}
-              {subtotal > 100 && (
+              {(cart.totalPrice || subtotal) > 100 && (
                 <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-4 text-white shadow-lg">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -151,12 +134,21 @@ const CartSection = () => {
               {/* Cart Items */}
               <div className="space-y-4">
                 <AnimatePresence>
-                  {cartItems.map((item) => (
-                    <div key={item.id}>
+                  {cart.items.map((item) => (
+                    <div key={item._id || item.id}>
                       <CartItem
-                        item={item}
-                        onUpdateQuantity={updateQuantity}
-                        onRemove={removeItem}
+                        item={{
+                          id: item._id || item.id,
+                          name: item.product?.title || item.name,
+                          brand: item.product?.brand || "Brand",
+                          price: item.price || item.product?.price || 0,
+                          quantity: item.quantity,
+                          image: item.product?.images?.[0] || item.image,
+                          inStock: true,
+                          category: item.product?.category || "Category",
+                        }}
+                        onUpdateQuantity={handleUpdateQuantity}
+                        onRemove={handleRemoveItem}
                       />
                     </div>
                   ))}
@@ -213,15 +205,9 @@ const CartSection = () => {
             <div className="lg:col-span-1">
               <div className="sticky top-8 space-y-6">
                 <CartSummary
-                  subtotal={subtotal}
-                  discount={discount}
-                  shipping={shipping}
-                  tax={tax}
-                  total={total}
-                  appliedCoupon={appliedCoupon}
-                  setAppliedCoupon={setAppliedCoupon}
-                  isCheckingOut={isCheckingOut}
-                  setIsCheckingOut={setIsCheckingOut}
+                  subtotal={cart.totalPrice || subtotal}
+                  total={cart.totalPrice || subtotal}
+                  itemCount={cart.totalItems || cart.items.length}
                 />
 
                 <RecommendedItems />
