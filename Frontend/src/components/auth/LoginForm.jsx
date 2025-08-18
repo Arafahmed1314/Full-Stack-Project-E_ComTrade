@@ -5,7 +5,7 @@ import SocialButtons from "./SocialButtons";
 import { authProvider } from "../../utils/auth";
 import { useDispatch } from "react-redux";
 
-const LoginForm = ({ onSwitchToRegister }) => {
+const LoginForm = ({ onSwitchToRegister, onSuccessfulLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const {
@@ -19,7 +19,8 @@ const LoginForm = ({ onSwitchToRegister }) => {
       data,
       `http://localhost:5000/api/auth/login`,
       dispatch,
-      "login"
+      "login",
+      onSuccessfulLogin
     );
   };
 

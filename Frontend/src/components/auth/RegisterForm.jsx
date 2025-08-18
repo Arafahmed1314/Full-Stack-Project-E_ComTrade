@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import SocialButtons from "./SocialButtons";
 import { useDispatch } from "react-redux";
 import { authProvider } from "../../utils/auth";
-const RegisterForm = ({ onSwitchToLogin }) => {
+const RegisterForm = ({ onSwitchToLogin, onSuccessfulRegister }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const dispatch = useDispatch();
@@ -25,7 +26,8 @@ const RegisterForm = ({ onSwitchToLogin }) => {
       data,
       `http://localhost:5000/api/auth/register`,
       dispatch,
-      "register"
+      "register",
+      onSuccessfulRegister
     );
   };
 

@@ -1,13 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
 const AuthModal = ({ isOpen, onClose, initialView = "login" }) => {
   const [currentView, setCurrentView] = useState(initialView);
+  const navigate = useNavigate();
 
-  const switchView = () => {
-    setCurrentView(currentView === "login" ? "register" : "login");
+  // Reset view when modal opens with new initial view
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentView(initialView);
+    }
+  }, [isOpen, initialView]);
+
+  // Handle successful register - switch to login
+  const handleSuccessfulRegister = () => {
+    console.log("handleSuccessfulRegister called - switching to login");
+    setCurrentView("login");
+  };
+
+  // Handle successful login - close modal and redirect to home
+  const handleSuccessfulLogin = () => {
+    console.log("handleSuccessfulLogin called - closing modal and redirecting");
+    onClose();
+    navigate("/"); // Redirect to home page
   };
 
   if (!isOpen) return null;
@@ -45,9 +63,13 @@ const AuthModal = ({ isOpen, onClose, initialView = "login" }) => {
               {currentView === "login" ? (
                 <LoginForm
                   onSwitchToRegister={() => setCurrentView("register")}
+                  onSuccessfulLogin={handleSuccessfulLogin}
                 />
               ) : (
-                <RegisterForm onSwitchToLogin={() => setCurrentView("login")} />
+                <RegisterForm
+                  onSwitchToLogin={() => setCurrentView("login")}
+                  onSuccessfulRegister={handleSuccessfulRegister}
+                />
               )}
             </div>
           </div>

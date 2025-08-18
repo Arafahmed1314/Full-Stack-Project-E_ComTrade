@@ -1,7 +1,7 @@
 import { setUser } from "../../redux/userSlice";
 // import { setUser } from "../redux/userSlice";
 import toast from "react-hot-toast";
-export async function authProvider(authData, url, dispatch, actionType) {
+export async function authProvider(authData, url, dispatch, actionType, onSuccess) {
     let body = {};
 
     try {
@@ -34,6 +34,14 @@ export async function authProvider(authData, url, dispatch, actionType) {
             }
             toast.success(result.message || "Authentication successful");
 
+            // Call success callback if provided - added delay to ensure state is updated
+            if (onSuccess) {
+                console.log("Auth success - calling callback");
+                setTimeout(() => {
+                    onSuccess();
+                }, 100);
+            }
+
         } else {
             console.log("Authentication failed");
             toast.error(result.message || "Something went wrong");
@@ -41,7 +49,8 @@ export async function authProvider(authData, url, dispatch, actionType) {
     } catch (error) {
         toast.error("Network or server error", error);
     }
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // Reduced delay for better UX
+    await new Promise((resolve) => setTimeout(resolve, 500));
 }
 export async function logOut(dispatch) {
     try {
