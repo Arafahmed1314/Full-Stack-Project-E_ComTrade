@@ -52,8 +52,6 @@ const ProductFilter = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialCategory]); // Only depend on initialCategory
 
-  // Apply filters when user manually changes them (no automatic triggers)
-
   // ✅ toggle section expand/collapse
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
@@ -165,13 +163,14 @@ const ProductFilter = ({
                     type="radio"
                     name="category"
                     value=""
+                    onClick={() => handleClearFilters()}
                     checked={localFilters.category === ""}
                     onChange={(e) =>
                       handleFilterChange("category", e.target.value)
                     }
                     className="mr-3 w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                   />
-                  <span className="text-gray-700">All Categories</span>
+                  <span className="text-gray-700">All Categoriess</span>
                 </div>
                 {categories.map((category) => (
                   <div key={category} className="flex items-center p-2">
