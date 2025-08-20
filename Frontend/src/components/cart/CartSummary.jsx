@@ -9,6 +9,7 @@ import {
   Check,
   X,
 } from "lucide-react";
+import { OrderForm } from "../order";
 
 const CartSummary = ({ subtotal, total }) => {
   const [couponCode, setCouponCode] = useState("");
@@ -16,6 +17,7 @@ const CartSummary = ({ subtotal, total }) => {
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [showOrderForm, setShowOrderForm] = useState(false);
 
   // Calculate values
   const discount = appliedCoupon ? subtotal * (appliedCoupon.discount || 0) : 0;
@@ -56,7 +58,8 @@ const CartSummary = ({ subtotal, total }) => {
     // Simulate checkout process
     setTimeout(() => {
       setIsCheckingOut(false);
-      // Navigate to checkout page
+      // Show order form instead of navigating
+      setShowOrderForm(true);
     }, 2000);
   };
 
@@ -264,6 +267,13 @@ const CartSummary = ({ subtotal, total }) => {
           </p>
         </div>
       )}
+
+      {/* Order Form Modal */}
+      <OrderForm
+        isOpen={showOrderForm}
+        onClose={() => setShowOrderForm(false)}
+        cartTotal={finalTotal}
+      />
     </div>
   );
 };
