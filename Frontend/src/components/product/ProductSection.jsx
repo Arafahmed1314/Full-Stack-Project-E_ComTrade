@@ -15,6 +15,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 const ProductSection = ({
+  initialCategory,
   products,
   productPagination,
   isLoading,
@@ -194,6 +195,7 @@ const ProductSection = ({
                       </button>
                     </div>
                     <ProductFilter
+                      initialCategory={initialCategory}
                       products={products}
                       isOpen={true}
                       onClose={() => setIsFilterOpen(false)}

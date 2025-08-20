@@ -6,18 +6,13 @@ import {
     Mail,
 } from "lucide-react";
 
-export const categories = [
-    "Men's Clothing",
-    "Women's Clothing",
-    "Electronics",
-    "Jewelry",
-    "Accessories",
-];
+// Categories will be fetched dynamically from the API
+export const categories = [];
 
 export const navigationItems = [
     { name: "Home", href: "/", icon: Home },
     { name: "Products", href: "/products", icon: Package },
-    { name: "Categories", href: "#", icon: Grid3X3, hasDropdown: true },
+    { name: "Categories", href: "/products", icon: Grid3X3, hasDropdown: true },
     { name: "About", href: "/about", icon: Info },
     { name: "Contact", href: "/contact", icon: Mail },
 ];

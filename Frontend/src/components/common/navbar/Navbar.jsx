@@ -11,12 +11,14 @@ import {
   MobileMenu,
   MobileMenuButton,
 } from "./index";
-import { categories, navigationItems, mockData } from "./constants";
+import { navigationItems, mockData } from "./constants";
 import { useSelector } from "react-redux";
+import useCategories from "../../../hooks/useCategories";
 
 const Navbar = () => {
   // State management
   const user = useSelector((state) => state.user);
+  const { categories, isLoading: categoriesLoading } = useCategories();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);

@@ -58,9 +58,9 @@ const NavigationItems = ({
                     {categories.map((category) => (
                       <Link
                         key={category}
-                        to={`/category/${category
-                          .toLowerCase()
-                          .replace(/\s+/g, "-")}`}
+                        to={`/products?category=${encodeURIComponent(
+                          category
+                        )}`}
                         className={`block text-gray-700 hover:text-blue-600 hover:bg-blue-50/50 transition-colors duration-200 ${
                           isMobile ? "px-3 py-2 rounded-lg" : "px-4 py-2"
                         }`}

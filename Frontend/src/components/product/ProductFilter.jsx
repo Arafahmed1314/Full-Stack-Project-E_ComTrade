@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Filter,
   X,
@@ -7,10 +7,11 @@ import {
   Star,
   DollarSign,
   Tag,
-  SlidersHorizontal,
 } from "lucide-react";
+import useCategories from "../../hooks/useCategories";
 
 const ProductFilter = ({
+  initialCategory,
   products,
   isOpen,
   onClose,
@@ -18,6 +19,7 @@ const ProductFilter = ({
   onClearFilters,
   currentFilters,
 }) => {
+  const { categories: allCategories } = useCategories(); // Get all categories from API
   const [expandedSections, setExpandedSections] = useState({
     category: true,
     price: true,
@@ -25,12 +27,34 @@ const ProductFilter = ({
   });
 
   const [localFilters, setLocalFilters] = useState({
-    category: currentFilters?.category || "",
+    category: initialCategory || currentFilters?.category || "",
     minPrice: currentFilters?.minPrice || "",
     maxPrice: currentFilters?.maxPrice || "",
     rating: currentFilters?.rating || "",
   });
 
+  // ✅ Simple: when initialCategory changes, update the filter once
+  useEffect(() => {
+    if (initialCategory) {
+      const newFilters = {
+        category: initialCategory,
+        minPrice: "",
+        maxPrice: "",
+        rating: "",
+      };
+      setLocalFilters(newFilters);
+
+      // Apply filter once - ignore eslint warning, this is intentional
+      if (onFilterChange) {
+        onFilterChange({ category: initialCategory });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialCategory]); // Only depend on initialCategory
+
+  // Apply filters when user manually changes them (no automatic triggers)
+
+  // ✅ toggle section expand/collapse
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -38,15 +62,21 @@ const ProductFilter = ({
     }));
   };
 
-  // Get unique categories from products
-  const categories = [
-    ...new Set(products?.map((product) => product.category) || []),
-  ];
-
-  // Handle filter changes
+  // ✅ handle filter change - SIMPLE VERSION
   const handleFilterChange = (filterType, value) => {
     const newFilters = { ...localFilters, [filterType]: value };
     setLocalFilters(newFilters);
+
+    // If "All Categories" is selected (empty value), clear the category filter
+    if (filterType === "category" && value === "") {
+      const filtersWithoutCategory = { ...newFilters };
+      delete filtersWithoutCategory.category;
+
+      if (onFilterChange) {
+        onFilterChange(filtersWithoutCategory);
+      }
+      return;
+    }
 
     // Remove empty values before sending to parent
     const cleanFilters = {};
@@ -61,7 +91,7 @@ const ProductFilter = ({
     }
   };
 
-  // Clear all filters
+  // ✅ clear filters
   const handleClearFilters = () => {
     const emptyFilters = {
       category: "",
@@ -71,13 +101,18 @@ const ProductFilter = ({
     };
     setLocalFilters(emptyFilters);
 
-    // Use the clearFilters function from the hook if available
     if (onClearFilters) {
       onClearFilters();
     } else if (onFilterChange) {
       onFilterChange({});
     }
   };
+
+  // ✅ Use categories from API (all categories) instead of filtered products
+  const categories =
+    allCategories.length > 0
+      ? allCategories
+      : [...new Set(products?.map((product) => product.category) || [])];
 
   return (
     <>

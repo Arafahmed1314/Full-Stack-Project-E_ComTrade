@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import ProductSection from "../components/product/ProductSection";
 import { useSelector } from "react-redux";
 import { useProductFilter } from "../hooks/useProductFilter";
+import { useLocation } from "react-router-dom";
 
 const ProductsPage = () => {
   const productsState = useSelector((state) => state.product || {});
+  const location = useLocation();
+
+  const params = new URLSearchParams(location.search);
+  const initialCategory = params.get("category");
 
   // Use the custom hook for filtering
   const {
@@ -16,6 +21,13 @@ const ProductsPage = () => {
     updateSort,
     updateSearch,
   } = useProductFilter();
+
+  // Apply initial category filter when component mounts or URL changes
+  useEffect(() => {
+    if (initialCategory && initialCategory !== filters.category) {
+      updateFilters({ category: initialCategory });
+    }
+  }, [initialCategory, updateFilters, filters.category]);
 
   const products = productsState?.products?.products || [];
   const productData = products.map((product) => ({
@@ -38,9 +50,12 @@ const ProductsPage = () => {
   }));
 
   // Handle filter changes from ProductFilter component
-  const handleFilterChange = (newFilters) => {
-    updateFilters(newFilters);
-  };
+  const handleFilterChange = useCallback(
+    (newFilters) => {
+      updateFilters(newFilters);
+    },
+    [updateFilters]
+  );
 
   if (error) {
     return (
@@ -56,6 +71,7 @@ const ProductsPage = () => {
   return (
     <div>
       <ProductSection
+        initialCategory={initialCategory}
         products={productData || []}
         productPagination={productsState?.products?.pagination}
         isLoading={isLoading}
