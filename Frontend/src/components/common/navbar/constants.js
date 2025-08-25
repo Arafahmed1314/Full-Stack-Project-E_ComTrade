@@ -2,7 +2,7 @@ import {
     Home,
     Package,
     Grid3X3,
-    Info,
+    ArrowRightLeft,
     Mail,
 } from "lucide-react";
 
@@ -13,7 +13,7 @@ export const navigationItems = [
     { name: "Home", href: "/", icon: Home },
     { name: "Products", href: "/products", icon: Package },
     { name: "Categories", href: "/products", icon: Grid3X3, hasDropdown: true },
-    { name: "Trade", href: "/trade", icon: Info },
+    { name: "Trade", href: "/trade", icon: ArrowRightLeft },
     { name: "Contact", href: "/contact", icon: Mail },
 ];
 

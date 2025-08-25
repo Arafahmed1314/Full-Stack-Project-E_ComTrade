@@ -1,0 +1,155 @@
+{
+  "tradePosts": [
+    {
+      "id": "1",
+      "title": "iPhone 14 Pro - Excellent Condition",
+      "description": "Barely used iPhone 14 Pro in Space Black. Looking to trade for a gaming laptop or high-end Android phone. Includes original box and all accessories.",
+      "images": [
+        "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500",
+        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500"
+      ],
+      "category": "Electronics",
+      "tags": ["smartphone", "apple", "trade"],
+      "postedBy": {
+        "id": "user1",
+        "username": "techtrader_mike",
+        "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150",
+        "verified": true
+      },
+      "timePosted": "2024-08-24T10:30:00Z",
+      "likes": 24,
+      "comments": 8,
+      "tradeRequests": 12,
+      "isLiked": false,
+      "location": "New York, NY"
+    },
+    {
+      "id": "2",
+      "title": "Vintage Vinyl Record Collection",
+      "description": "Amazing collection of 80s and 90s vinyl records. Over 200 albums including rare Beatles, Pink Floyd, and Led Zeppelin pressings. Looking for vintage camera equipment or art supplies.",
+      "images": [
+        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500",
+        "https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?w=500"
+      ],
+      "category": "Music",
+      "tags": ["vinyl", "music", "vintage", "collectibles"],
+      "postedBy": {
+        "id": "user2",
+        "username": "vinyl_collector",
+        "avatar": "https://images.unsplash.com/photo-1494790108755-2616b612b19c?w=150",
+        "verified": false
+      },
+      "timePosted": "2024-08-24T08:15:00Z",
+      "likes": 45,
+      "comments": 15,
+      "tradeRequests": 8,
+      "isLiked": true,
+      "location": "Los Angeles, CA"
+    },
+    {
+      "id": "3",
+      "title": "MacBook Pro 16\" M2 - Like New",
+      "description": "2023 MacBook Pro with M2 chip, 32GB RAM, 1TB SSD. Perfect for developers and content creators. Open to trading for high-end gaming PC or cash + electronics.",
+      "images": [
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500"
+      ],
+      "category": "Electronics",
+      "tags": ["laptop", "apple", "macbook", "programming"],
+      "postedBy": {
+        "id": "user3",
+        "username": "dev_sarah",
+        "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150",
+        "verified": true
+      },
+      "timePosted": "2024-08-23T16:45:00Z",
+      "likes": 67,
+      "comments": 22,
+      "tradeRequests": 19,
+      "isLiked": false,
+      "location": "San Francisco, CA"
+    },
+    {
+      "id": "4",
+      "title": "Designer Handbag Collection",
+      "description": "Authentic designer handbags - Louis Vuitton, Gucci, Prada. All in excellent condition with authentication certificates. Looking for jewelry or luxury watches.",
+      "images": [
+        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+        "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=500",
+        "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500"
+      ],
+      "category": "Fashion",
+      "tags": ["luxury", "handbags", "designer", "authentic"],
+      "postedBy": {
+        "id": "user4",
+        "username": "fashionista_emma",
+        "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150",
+        "verified": true
+      },
+      "timePosted": "2024-08-23T14:20:00Z",
+      "likes": 89,
+      "comments": 31,
+      "tradeRequests": 25,
+      "isLiked": true,
+      "location": "Miami, FL"
+    },
+    {
+      "id": "5",
+      "title": "Professional Camera Gear",
+      "description": "Canon EOS R5 with 24-70mm f/2.8L lens, extra batteries, memory cards, and professional tripod. Perfect for photography enthusiasts. Open to trading for drone or video equipment.",
+      "images": [
+        "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=500"
+      ],
+      "category": "Photography",
+      "tags": ["camera", "canon", "photography", "professional"],
+      "postedBy": {
+        "id": "user5",
+        "username": "photo_alex",
+        "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
+        "verified": false
+      },
+      "timePosted": "2024-08-23T11:30:00Z",
+      "likes": 42,
+      "comments": 18,
+      "tradeRequests": 14,
+      "isLiked": false,
+      "location": "Seattle, WA"
+    },
+    {
+      "id": "6",
+      "title": "Gaming Setup - Complete Battlestation",
+      "description": "High-end gaming PC (RTX 4080, i9-13900K), 4K monitor, mechanical keyboard, gaming mouse, and RGB setup. Looking to trade for car parts or outdoor gear.",
+      "images": [
+        "https://images.unsplash.com/photo-1547394765-185e1e68f34e?w=500",
+        "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=500"
+      ],
+      "category": "Gaming",
+      "tags": ["gaming", "pc", "setup", "rgb"],
+      "postedBy": {
+        "id": "user6",
+        "username": "gamer_xyz",
+        "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150",
+        "verified": false
+      },
+      "timePosted": "2024-08-22T19:45:00Z",
+      "likes": 156,
+      "comments": 43,
+      "tradeRequests": 31,
+      "isLiked": true,
+      "location": "Austin, TX"
+    }
+  ],
+  "categories": [
+    "Electronics",
+    "Fashion",
+    "Home & Garden",
+    "Sports & Outdoors",
+    "Books & Media",
+    "Art & Collectibles",
+    "Gaming",
+    "Photography",
+    "Music",
+    "Automotive",
+    "Tools & Equipment",
+    "Other"
+  ]
+}

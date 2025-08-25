@@ -48,6 +48,12 @@ export const profileAPI = {
                 body: JSON.stringify(profileData),
             });
 
+            // Check if response is JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Server returned invalid response. Please check your connection.');
+            }
+
             const data = await response.json();
 
             if (!response.ok) {
@@ -62,10 +68,19 @@ export const profileAPI = {
             };
         } catch (error) {
             console.error('Update profile error:', error);
-            toast.error(error.message || 'Failed to update profile');
+
+            // Better error messages for common issues
+            let errorMessage = error.message;
+            if (error.message.includes('Failed to fetch')) {
+                errorMessage = 'Network error. Please check your connection.';
+            } else if (error.message.includes('<!DOCTYPE')) {
+                errorMessage = 'Server error. The image might be too large.';
+            }
+
+            toast.error(errorMessage || 'Failed to update profile');
             return {
                 success: false,
-                error: error.message
+                error: errorMessage
             };
         }
     },
@@ -149,13 +164,17 @@ export const validateProfileData = (formData) => {
         errors.name = 'Name must be at least 2 characters long';
     }
 
-    if (formData.phone && !/^\+?[\d\s\-()]+$/.test(formData.phone)) {
+    // More lenient phone validation - allow empty or valid format
+    if (formData.phone && formData.phone.trim() && !/^\+?[\d\s\-()]+$/.test(formData.phone)) {
         errors.phone = 'Please enter a valid phone number';
     }
 
-    if (formData.address && formData.address.trim().length < 5) {
-        errors.address = 'Address must be at least 5 characters long';
+    // More lenient address validation - allow empty or at least 2 characters
+    if (formData.address && formData.address.trim() && formData.address.trim().length < 2) {
+        errors.address = 'Address must be at least 2 characters long';
     }
+
+    console.log('Validation result:', { isValid: Object.keys(errors).length === 0, errors });
 
     return {
         isValid: Object.keys(errors).length === 0,

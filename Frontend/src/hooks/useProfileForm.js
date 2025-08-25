@@ -20,6 +20,11 @@ export const useProfileForm = () => {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
+        console.log('useProfileForm: user changed in Redux:', {
+            ...user,
+            avatar: user?.avatar ? 'base64 image' : null
+        });
+
         if (user) {
             setFormData({
                 name: user.name || "",
@@ -27,6 +32,14 @@ export const useProfileForm = () => {
                 phone: user.phone || "",
                 address: user.address || "",
                 avatar: user.avatar || ""
+            });
+
+            console.log('useProfileForm: form data updated:', {
+                name: user.name || "",
+                email: user.email || "",
+                phone: user.phone || "",
+                address: user.address || "",
+                avatar: user.avatar ? 'base64 image' : ""
             });
         }
     }, [user]);
@@ -90,7 +103,9 @@ export const useProfileForm = () => {
             // Auto-save avatar immediately
             const result = await profileAPI.updateProfile({
                 name: formData.name,
-                avatar: base64
+                avatar: base64,
+                phone: formData.phone,
+                address: formData.address,
             });
 
             if (result.success) {
@@ -112,13 +127,44 @@ export const useProfileForm = () => {
         }
     };
 
-    // Helper function to convert file to base64
+    // Helper function to convert file to base64 with compression
     const convertFileToBase64 = (file) => {
         return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-            reader.readAsDataURL(file);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            img.onload = () => {
+                // Set max dimensions
+                const MAX_WIDTH = 400;
+                const MAX_HEIGHT = 400;
+
+                let { width, height } = img;
+
+                // Calculate new dimensions
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height = (height * MAX_WIDTH) / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width = (width * MAX_HEIGHT) / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                // Draw and compress
+                ctx.drawImage(img, 0, 0, width, height);
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8); // 80% quality
+                resolve(compressedBase64);
+            };
+
+            img.onerror = () => reject(new Error('Failed to load image'));
+            img.src = URL.createObjectURL(file);
         });
     };
 
@@ -134,15 +180,31 @@ export const useProfileForm = () => {
         setErrors({});
 
         try {
+            console.log('Sending profile update:', {
+                name: formData.name,
+                avatar: formData.avatar ? 'base64 image' : null,
+                phone: formData.phone,
+                address: formData.address,
+            });
+
             const result = await profileAPI.updateProfile({
                 name: formData.name,
                 avatar: formData.avatar,
-                // Note: phone and address are not in the backend model yet
-                // You can add them to your backend User model if needed
+                phone: formData.phone,
+                address: formData.address,
+            });
+
+            console.log('Profile update result:', {
+                ...result,
+                user: result.user ? { ...result.user, avatar: result.user.avatar ? 'base64 image' : null } : null
             });
 
             if (result.success) {
                 // Update Redux store with new user data
+                console.log('Updating Redux store with user:', {
+                    ...result.user,
+                    avatar: result.user.avatar ? 'base64 image' : null
+                });
                 dispatch(setUser(result.user));
                 setLoading(false);
                 return { success: true, message: result.message };
