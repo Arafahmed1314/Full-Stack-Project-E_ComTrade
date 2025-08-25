@@ -21,6 +21,14 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: String, // optional profile image
     },
+    phone: {
+        type: String, // phone number
+        required: false,
+    },
+    address: {
+        type: String, // user address
+        required: false,
+    },
     emailVerified: {
         type: Boolean,
         default: false, // false for manual registration, true for Google users

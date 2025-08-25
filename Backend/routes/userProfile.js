@@ -8,6 +8,13 @@ const router = express.Router();
 // All routes in this file require authentication
 router.use(verifyToken);
 
+// Add logging middleware for all profile routes
+router.use((req, res, next) => {
+    console.log(`Profile route accessed: ${req.method} ${req.path}`);
+    console.log('User ID:', req.userId);
+    next();
+});
+
 // Get user profile
 router.get("/", (req, res) => {
     res.json({
@@ -18,6 +25,8 @@ router.get("/", (req, res) => {
             email: req.user.email,
             emailVerified: req.user.emailVerified,
             avatar: req.user.avatar,
+            phone: req.user.phone,
+            address: req.user.address,
             lastLogin: req.user.lastLogin,
             registrationType: req.user.googleId ? 'google' : 'manual'
         }
@@ -27,23 +36,42 @@ router.get("/", (req, res) => {
 // Update user profile
 router.put("/", async (req, res) => {
     try {
-        const { name, avatar } = req.body;
+        const { name, avatar, phone, address } = req.body;
+        console.log('Profile update request body:', { name, avatar: avatar ? 'base64 image' : null, phone, address });
+
         const user = await User.findById(req.userId);
+        console.log('User before update:', {
+            id: user._id,
+            name: user.name,
+            phone: user.phone,
+            address: user.address
+        });
 
         if (name) user.name = name;
         if (avatar) user.avatar = avatar;
+        if (phone !== undefined) user.phone = phone; // Allow empty string to clear phone
+        if (address !== undefined) user.address = address; // Allow empty string to clear address
 
         await user.save();
 
-        res.json({
+        const responseData = {
             message: "Profile updated successfully",
             user: {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                avatar: user.avatar
+                avatar: user.avatar,
+                phone: user.phone,
+                address: user.address
             }
+        };
+
+        console.log('Profile update response:', {
+            ...responseData,
+            user: { ...responseData.user, avatar: responseData.user.avatar ? 'base64 image' : null }
         });
+
+        res.json(responseData);
     } catch (error) {
         res.status(500).json({ message: "Error updating profile", error: error.message });
     }
