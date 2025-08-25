@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Package } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import AuthButtons from "./AuthButtons";
 
 const UserDropdown = ({
@@ -12,6 +13,13 @@ const UserDropdown = ({
   setIsAuthModalOpen,
   setIsUserDropdownOpen,
 }) => {
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    navigate("/profile");
+    setIsUserDropdownOpen(false);
+  };
+
   return (
     <div className="relative user-dropdown-container">
       <AnimatePresence>
@@ -34,7 +42,10 @@ const UserDropdown = ({
             ) : (
               <div className="space-y-0">
                 {/* Profile */}
-                <button className="w-full px-4 py-3 text-left text-gray-700 hover:bg-gray-50 transition-all duration-200 flex items-center gap-3">
+                <button
+                  onClick={handleProfileClick}
+                  className="w-full px-4 py-3 text-left text-gray-700 hover:bg-gray-50 transition-all duration-200 flex items-center gap-3"
+                >
                   <User className="w-4 h-4" />
                   My Profile
                 </button>
