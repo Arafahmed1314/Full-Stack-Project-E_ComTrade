@@ -11,6 +11,7 @@ import Navbar from "./components/common/navbar/Navbar";
 import { useDispatch } from "react-redux";
 import { checkAuth } from "./utils/checkAuth";
 import { fetchProductFromApi } from "./utils/fetchProductFromApi";
+import Trade from "./components/trade/Trade";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/wishlist" element={<WishlistPage />} />
+            <Route path="/trade" element={<Trade />} />
             <Route path="/products/:productId" element={<ProductDetails />} />
           </Routes>
         </main>

@@ -13,7 +13,7 @@ export const navigationItems = [
     { name: "Home", href: "/", icon: Home },
     { name: "Products", href: "/products", icon: Package },
     { name: "Categories", href: "/products", icon: Grid3X3, hasDropdown: true },
-    { name: "About", href: "/about", icon: Info },
+    { name: "Trade", href: "/trade", icon: Info },
     { name: "Contact", href: "/contact", icon: Mail },
 ];
 

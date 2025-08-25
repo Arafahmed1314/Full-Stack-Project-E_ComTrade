@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Filter,
   X,
@@ -11,7 +11,6 @@ import {
 import useCategories from "../../hooks/useCategories";
 
 const ProductFilter = ({
-  initialCategory,
   products,
   isOpen,
   onClose,
@@ -27,30 +26,11 @@ const ProductFilter = ({
   });
 
   const [localFilters, setLocalFilters] = useState({
-    category: initialCategory || currentFilters?.category || "",
+    category: currentFilters?.category || "",
     minPrice: currentFilters?.minPrice || "",
     maxPrice: currentFilters?.maxPrice || "",
     rating: currentFilters?.rating || "",
   });
-
-  // ✅ Simple: when initialCategory changes, update the filter once
-  useEffect(() => {
-    if (initialCategory) {
-      const newFilters = {
-        category: initialCategory,
-        minPrice: "",
-        maxPrice: "",
-        rating: "",
-      };
-      setLocalFilters(newFilters);
-
-      // Apply filter once - ignore eslint warning, this is intentional
-      if (onFilterChange) {
-        onFilterChange({ category: initialCategory });
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialCategory]); // Only depend on initialCategory
 
   // ✅ toggle section expand/collapse
   const toggleSection = (section) => {
