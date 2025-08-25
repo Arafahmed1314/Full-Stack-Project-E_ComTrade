@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search } from "lucide-react";
@@ -37,6 +38,7 @@ const MobileMenu = ({
               isMobile={true}
               isCategoriesOpen={isCategoriesOpen}
               setIsCategoriesOpen={setIsCategoriesOpen}
+              setIsMobileMenuOpen={setIsMobileMenuOpen}
             />
 
             <AuthButtons

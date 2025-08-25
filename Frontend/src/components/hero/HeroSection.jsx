@@ -23,7 +23,10 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="w-full pb-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 lg:flex lg:items-center">
+    <section
+      id="home"
+      className="w-full pb-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 lg:flex lg:items-center"
+    >
       <Background currentSlide={currentSlide} heroImages={heroImages} />
 
       {/* Main Content */}

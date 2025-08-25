@@ -16,7 +16,7 @@ const HomePage = () => {
     <div className="flex flex-col space-y-5">
       <HeroSection />
       <ProductShowcase products={productList} />
-      {/* <CategorySection products={productList} /> */}
+      <CategorySection />
       <ReviewSection />
     </div>
   );

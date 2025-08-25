@@ -93,6 +93,7 @@ const Navbar = () => {
                 categories={categories}
                 isCategoriesOpen={isCategoriesOpen}
                 setIsCategoriesOpen={setIsCategoriesOpen}
+                setIsMobileMenuOpen={setIsMobileMenuOpen}
               />
             </div>
 
