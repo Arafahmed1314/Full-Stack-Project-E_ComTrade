@@ -20,10 +20,10 @@ const Background = ({ currentSlide, heroImages }) => {
       </div>
 
       {/* Simplified Background Elements */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 overflow-x-hidden">
         {/* Static gradient orbs */}
-        <div className="absolute top-20 -left-40 w-80 h-80 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-3xl opacity-30" />
-        <div className="absolute bottom-20 -right-40 w-80 h-80 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-full blur-3xl opacity-40" />
+        <div className="absolute top-20 -left-40 w-80 h-80 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-3xl opacity-30 pointer-events-none" />
+        <div className="absolute bottom-20 -right-40 w-80 h-80 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-full blur-3xl opacity-40 pointer-events-none" />
       </div>
     </>
   );

@@ -81,23 +81,18 @@ const OrderForm = ({ isOpen, onClose, cartTotal }) => {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden max-h-[95vh] overflow-y-auto relative z-[9999]"
+            className="w-full max-w-lg lg:max-w-2xl xl:max-w-3xl bg-white rounded-xl shadow-lg overflow-hidden max-h-[95vh] overflow-y-auto relative z-[9999]"
           >
             {/* Header */}
-            <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 z-[10000]">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold">Complete Your Order</h2>
-                  <p className="text-blue-100 mt-1">Secure checkout process</p>
-                </div>
-                <button
-                  onClick={handleClose}
-                  disabled={isSubmitting}
-                  className="p-2 hover:bg-white/20 rounded-full transition-colors disabled:opacity-50"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
+            <div className="sticky top-0 bg-white border-b border-gray-100 p-4 z-[10000] flex items-center justify-between">
+              <h2 className="text-lg font-bold text-gray-800">Order Details</h2>
+              <button
+                onClick={handleClose}
+                disabled={isSubmitting}
+                className="p-1 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-50"
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
             </div>
 
             {/* Success State */}
@@ -130,52 +125,43 @@ const OrderForm = ({ isOpen, onClose, cartTotal }) => {
             </AnimatePresence>
 
             {/* Form Content */}
-            <form onSubmit={handleSubmit(onSubmit)} className="p-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Form Fields */}
-                <div className="lg:col-span-2 space-y-6">
-                  <PersonalInformationForm
-                    register={register}
-                    errors={errors}
-                  />
-                  <ShippingAddressForm register={register} errors={errors} />
-                  <PaymentInformationForm register={register} errors={errors} />
-                </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-4">
+              {/* Form Fields */}
+              <PersonalInformationForm register={register} errors={errors} />
+              <ShippingAddressForm register={register} errors={errors} />
+              <PaymentInformationForm register={register} errors={errors} />
 
-                {/* Order Summary */}
-                <div className="lg:col-span-1">
-                  <div className="sticky top-8">
-                    <OrderSummary cartTotal={cartTotal} />
-                  </div>
-                </div>
+              {/* Order Summary */}
+              <div className="my-2">
+                <OrderSummary cartTotal={cartTotal} />
               </div>
 
               {/* Submit Button */}
-              <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200">
+              <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
                 <button
                   type="button"
                   onClick={handleClose}
                   disabled={isSubmitting}
-                  className="flex items-center gap-2 px-6 py-3 text-gray-600 hover:text-gray-800 transition-colors disabled:opacity-50"
+                  className="flex items-center gap-2 px-4 py-2 text-gray-500 hover:text-gray-800 text-sm transition-colors disabled:opacity-50"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  Back to Cart
+                  Cancel
                 </button>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 transition-all transform hover:scale-105 disabled:hover:scale-100"
+                  className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-all text-sm"
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <Loader2 className="w-4 h-4 animate-spin" />
                       Processing...
                     </>
                   ) : (
                     <>
                       Place Order
-                      <span className="bg-white/20 px-2 py-1 rounded-md text-sm">
+                      <span className="bg-white/20 px-2 py-1 rounded text-xs ml-2">
                         ${cartTotal.toFixed(2)}
                       </span>
                     </>

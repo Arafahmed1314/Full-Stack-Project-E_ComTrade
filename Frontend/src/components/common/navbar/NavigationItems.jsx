@@ -17,14 +17,12 @@ const NavigationItems = ({
 
   // Function to handle category click and scroll to section
   const handleCategoryClick = (category) => {
-    // Close dropdown and mobile menu
     setIsCategoriesOpen(false);
     if (isMobile && setIsMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
-
-    // Smooth scroll to the category section with custom duration
-    scrollToCategory(category, 80, 1000);
+    // Always navigate to home with category as query param
+    navigate(`/?category=${encodeURIComponent(category)}`);
   };
 
   // Function to handle navigation item clicks with smooth scrolling

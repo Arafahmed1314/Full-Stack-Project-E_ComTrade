@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { OrderForm } from "../../order";
 import {
   Heart,
   ShoppingCart,
@@ -17,6 +18,7 @@ import AddToWishlistButton from "../../common/AddToWishlistButton";
 const ProductInfo = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(0);
+  const [isOrderOpen, setIsOrderOpen] = useState(false);
 
   // Safety check
   if (!product) {
@@ -179,9 +181,19 @@ const ProductInfo = ({ product }) => {
           </button>
         </div>
 
-        <button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 px-6 rounded-lg font-semibold transition-colors">
+        <button
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 px-6 rounded-lg font-semibold transition-colors"
+          onClick={() => setIsOrderOpen(true)}
+        >
           Buy Now
         </button>
+
+        {/* Order Form Modal */}
+        <OrderForm
+          isOpen={isOrderOpen}
+          onClose={() => setIsOrderOpen(false)}
+          cartTotal={product.price * quantity}
+        />
       </div>
 
       {/* Features */}

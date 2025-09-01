@@ -42,7 +42,7 @@ function App() {
 
   return (
     <Router>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col min-h-screen overflow-x-hidden">
         <Navbar />
         <main className="flex-grow overflow-hidden">
           <Routes>
