@@ -9,6 +9,7 @@ const TradeHeader = ({
   showMobileFilters,
   setShowMobileFilters,
   setShowCreatePost,
+  setShowRequests,
   selectedCategory,
   sortBy,
 }) => {
@@ -18,7 +19,7 @@ const TradeHeader = ({
         <div className="flex items-center gap-3">
           {/* Mobile Message Toggle */}
           <button
-            onClick={() => setShowMessages(!showMessages)}
+            onClick={() => setShowMessages(true)}
             className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
           >
             <MessageCircle className="w-5 h-5 text-gray-600" />
@@ -28,6 +29,7 @@ const TradeHeader = ({
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Requests badge removed from header (left Messages shows notifications) */}
           {/* Mobile Search & Filter */}
           <div className="flex items-center gap-1 lg:hidden">
             <div className="relative">
@@ -43,7 +45,7 @@ const TradeHeader = ({
 
             {/* Mobile Filter Button */}
             <button
-              onClick={() => setShowMobileFilters(!showMobileFilters)}
+              onClick={() => setShowMobileFilters(true)}
               className={`p-1.5 rounded-lg transition-colors relative ${
                 showMobileFilters
                   ? "bg-indigo-100 text-indigo-600"

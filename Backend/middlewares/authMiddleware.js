@@ -6,6 +6,9 @@ const verifyToken = async (req, res, next) => {
     try {
         let token;
 
+        console.log('verifyToken: headers.authorization=', !!(req.headers && req.headers.authorization));
+        console.log('verifyToken: cookie authToken present=', !!(req.cookies && req.cookies.authToken));
+
         // First, try to get token from cookies
         if (req.cookies && req.cookies.authToken) {
             token = req.cookies.authToken;
@@ -20,7 +23,13 @@ const verifyToken = async (req, res, next) => {
         }
 
         // Verify token using utility function
-        const decoded = verifyJWT(token);
+        let decoded;
+        try {
+            decoded = verifyJWT(token);
+        } catch (jwtErr) {
+            console.error('verifyToken: JWT verification failed:', jwtErr && jwtErr.message ? jwtErr.message : jwtErr);
+            throw jwtErr;
+        }
 
         // Get user from database
         const user = await User.findById(decoded.userId).select('-password');

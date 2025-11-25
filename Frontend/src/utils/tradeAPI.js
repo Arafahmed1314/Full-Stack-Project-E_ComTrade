@@ -67,4 +67,66 @@ export const deletePost = async (id) => {
   return true;
 };
 
+export const createRequest = async ({ postId, message }) => {
+  const res = await fetch(`${API_BASE}/api/trade/requests`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ postId, message }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Failed to create request');
+  }
+  const data = await res.json();
+  return data.request;
+};
+
+export const fetchIncomingRequests = async (params = {}) => {
+  const qs = new URLSearchParams(params).toString();
+  const res = await fetch(`${API_BASE}/api/trade/requests/incoming${qs ? `?${qs}` : ''}`, {
+    credentials: 'include',
+  });
+  if (!res.ok) throw new Error('Failed to fetch incoming requests');
+  const data = await res.json();
+  return data;
+};
+
+export const fetchOutgoingRequests = async () => {
+  const res = await fetch(`${API_BASE}/api/trade/requests/outgoing`, { credentials: 'include' });
+  if (!res.ok) throw new Error('Failed to fetch outgoing requests');
+  const data = await res.json();
+  return data.requests;
+};
+
+export const fetchRequestCount = async () => {
+  const res = await fetch(`${API_BASE}/api/trade/requests/count`, { credentials: 'include' });
+  if (!res.ok) throw new Error('Failed to fetch request count');
+  return res.json();
+};
+
+export const acceptRequest = async (id) => {
+  const res = await fetch(`${API_BASE}/api/trade/requests/${id}/accept`, { method: 'PATCH', credentials: 'include' });
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    const msg = errBody && errBody.message ? errBody.message : `HTTP ${res.status}`;
+    const err = new Error(msg);
+    err.status = res.status;
+    throw err;
+  }
+  return res.json();
+};
+
+export const declineRequest = async (id) => {
+  const res = await fetch(`${API_BASE}/api/trade/requests/${id}/decline`, { method: 'PATCH', credentials: 'include' });
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    const msg = errBody && errBody.message ? errBody.message : `HTTP ${res.status}`;
+    const err = new Error(msg);
+    err.status = res.status;
+    throw err;
+  }
+  return res.json();
+};
+
 export default { fetchPosts, createPost, fetchUserPosts, deletePost };

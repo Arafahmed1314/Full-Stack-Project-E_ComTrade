@@ -8,6 +8,7 @@ import {
   RightSidebar,
   MobileFilterSidebar,
 } from "../components/trade";
+import RequestsPanel from "../components/trade/RequestsPanel";
 import {
   filterAndSortPosts,
   checkIsMobile,
@@ -25,6 +26,7 @@ const TradePage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
+  const [showRequests, setShowRequests] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("newest");
@@ -83,7 +85,12 @@ const TradePage = () => {
       {/* Left Sidebar - Messages */}
       {!isMobile && (
         <div className="hidden lg:block w-80 border-r border-gray-200 bg-white h-full">
-          <MessageInbox isOpen={true} onClose={() => {}} isMobile={false} />
+          <MessageInbox
+            isOpen={true}
+            onClose={() => {}}
+            isMobile={false}
+            setShowRequests={setShowRequests}
+          />
         </div>
       )}
 
@@ -92,6 +99,7 @@ const TradePage = () => {
         isOpen={showMessages && isMobile}
         onClose={() => setShowMessages(false)}
         isMobile={true}
+        setShowRequests={setShowRequests}
       />
 
       {/* Mobile Filter Sidebar */}
@@ -115,6 +123,7 @@ const TradePage = () => {
           <TradeHeader
             showMessages={showMessages}
             setShowMessages={setShowMessages}
+            setShowRequests={setShowRequests}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             showMobileFilters={showMobileFilters}
@@ -123,6 +132,11 @@ const TradePage = () => {
             selectedCategory={selectedCategory}
             sortBy={sortBy}
           />
+
+          {/* Requests Panel */}
+          {showRequests && (
+            <RequestsPanel onClose={() => setShowRequests(false)} />
+          )}
 
           {/* Scrollable Feed */}
           <div className="flex-1 overflow-y-auto">

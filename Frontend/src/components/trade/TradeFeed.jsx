@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import TradePostCard from "./TradePostCard";
+import CreateRequestModal from "./CreateRequestModal";
+import * as tradeAPI from "../../utils/tradeAPI";
 
 const TradeFeed = ({ posts, setPosts }) => {
   const [likedPosts, setLikedPosts] = useState(new Set());
@@ -28,10 +30,20 @@ const TradeFeed = ({ posts, setPosts }) => {
   };
 
   const handleTradeRequest = (postId) => {
+    // open modal for the selected post
+    const post = posts.find((p) => p.id === postId);
+    if (post) setSelectedPost(post);
+  };
+
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  const handleRequestCreated = (createdRequest) => {
+    // increment request badge on the related post
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
-        post.id === postId
-          ? { ...post, tradeRequests: post.tradeRequests + 1 }
+        post.id === (createdRequest.post?._id || createdRequest.post) ||
+        post.id === createdRequest.post
+          ? { ...post, tradeRequests: (post.tradeRequests || 0) + 1 }
           : post
       )
     );
@@ -64,6 +76,13 @@ const TradeFeed = ({ posts, setPosts }) => {
           />
         </div>
       ))}
+      {selectedPost && (
+        <CreateRequestModal
+          post={selectedPost}
+          onClose={() => setSelectedPost(null)}
+          onCreated={handleRequestCreated}
+        />
+      )}
     </div>
   );
 };

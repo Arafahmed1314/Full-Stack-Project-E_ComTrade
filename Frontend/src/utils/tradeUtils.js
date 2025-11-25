@@ -75,7 +75,12 @@ export const createNewPost = (newPost) => {
  * @returns {boolean} True if mobile device
  */
 export const checkIsMobile = () => {
-    return window.innerWidth < 768;
+    // Prefer matchMedia when available (more reliable across emulators)
+    if (typeof window !== 'undefined' && window.matchMedia) {
+        // Treat medium devices (up to 1023px) as mobile for the trade UI panels
+        return window.matchMedia('(max-width: 1023px)').matches;
+    }
+    return window.innerWidth <= 1023;
 };
 
 /**

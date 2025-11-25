@@ -1,3 +1,5 @@
 .env
 node_modules/
-.env
+.env.example
+# Dev helper scripts - keep local, don't push
+scripts/

@@ -9,6 +9,7 @@ import {
   MoreVertical,
 } from "lucide-react";
 import { fetchPosts } from "../../utils/tradeAPI";
+import RequestsBadge from "./RequestsBadge";
 
 // Small Avatar component: shows image if available, otherwise initial
 const Avatar = ({ src, name, className = "w-12 h-12" }) => {
@@ -35,7 +36,7 @@ const Avatar = ({ src, name, className = "w-12 h-12" }) => {
   );
 };
 
-const MessageInbox = ({ isOpen, onClose, isMobile }) => {
+const MessageInbox = ({ isOpen, onClose, isMobile, setShowRequests }) => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [newMessage, setNewMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -155,10 +156,20 @@ const MessageInbox = ({ isOpen, onClose, isMobile }) => {
         <div className="p-4 border-b border-gray-200/50 bg-gradient-to-r from-indigo-50/50 to-purple-50/50">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <div className="p-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg">
-                <MessageCircle className="w-5 h-5 text-white" />
+              <div className="flex items-center">
+                <div className="p-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <MessageCircle className="w-5 h-5 text-white" />
+                </div>
+                <div className="ml-3 hidden sm:block font-semibold text-gray-900">
+                  Messages
+                </div>
               </div>
-              <h2 className="text-lg font-semibold text-gray-900">Messages</h2>
+              {/* Requests badge in message header (desktop) - separated with margin */}
+              <div className="ml-4 hidden md:block">
+                <RequestsBadge
+                  onClick={() => setShowRequests && setShowRequests(true)}
+                />
+              </div>
             </div>
             {isMobile && (
               <button

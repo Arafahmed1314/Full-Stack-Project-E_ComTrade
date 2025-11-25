@@ -39,7 +39,7 @@ const RightSidebar = ({
   categories,
 }) => {
   return (
-    <div className="hidden xl:block w-80 border-l pb-12 border-gray-200 bg-white">
+    <div className="hidden lg:block w-80 border-l pb-12 border-gray-200 bg-white">
       <div className="h-full flex flex-col">
         {/* Fixed Header Section */}
         <div className="p-4 border-b border-gray-200 bg-white">
