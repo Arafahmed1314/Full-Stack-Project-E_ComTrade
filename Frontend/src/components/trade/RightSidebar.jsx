@@ -1,5 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Search, Filter, TrendingUp } from "lucide-react";
+
+const ActiveTrader = ({ post }) => {
+  const [avatarError, setAvatarError] = useState(false);
+  const user = post.postedBy || {};
+  const initial = user.username ? user.username.charAt(0).toUpperCase() : "U";
+
+  return (
+    <div className="flex items-center gap-3">
+      {user.avatar && !avatarError ? (
+        <img
+          src={user.avatar}
+          alt={user.username}
+          onError={() => setAvatarError(true)}
+          className="w-8 h-8 rounded-full object-cover"
+        />
+      ) : (
+        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-700">
+          {initial}
+        </div>
+      )}
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-gray-900 truncate">
+          {user.username}
+        </p>
+        <p className="text-xs text-gray-500">{post.category}</p>
+      </div>
+    </div>
+  );
+};
 
 const RightSidebar = ({
   searchQuery,
@@ -71,19 +100,7 @@ const RightSidebar = ({
               </h3>
               <div className="space-y-3">
                 {posts.slice(0, 3).map((post) => (
-                  <div key={post.id} className="flex items-center gap-3">
-                    <img
-                      src={post.postedBy.avatar}
-                      alt={post.postedBy.username}
-                      className="w-8 h-8 rounded-full object-cover"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
-                        {post.postedBy.username}
-                      </p>
-                      <p className="text-xs text-gray-500">{post.category}</p>
-                    </div>
-                  </div>
+                  <ActiveTrader key={post.id} post={post} />
                 ))}
               </div>
             </div>

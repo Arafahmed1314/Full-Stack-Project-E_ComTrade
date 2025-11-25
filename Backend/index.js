@@ -12,6 +12,7 @@ import cartRoute from "./routes/cartRoute.js"; // Assuming you have a cart route
 import orderRoute from "./routes/orderRoute.js";
 import wishlistRoute from "./routes/wishlistRoute.js"; // Assuming you have a wishlist route
 import reviewRoute from "./routes/reviewRoute.js"; // Assuming you have a review route
+import tradeRoute from "./routes/tradeRoute.js";
 import cookieParser from "cookie-parser";
 import { verifyToken } from "./middlewares/authMiddleware.js";
 
@@ -45,6 +46,7 @@ app.use('/api/cart', verifyToken, cartRoute);
 app.use('/api/orders', verifyToken, orderRoute);
 app.use('/api/wishlist', verifyToken, wishlistRoute);
 app.use('/api/reviews', verifyToken, reviewRoute);
+app.use('/api/trade', tradeRoute);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

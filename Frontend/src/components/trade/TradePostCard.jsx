@@ -12,6 +12,7 @@ import {
 
 const TradePostCard = ({ post, onLike, onTradeRequest }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [avatarError, setAvatarError] = useState(false);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
 
@@ -107,7 +108,7 @@ const TradePostCard = ({ post, onLike, onTradeRequest }) => {
 
           {/* Category Badge */}
           <div className="absolute top-4 left-4">
-            <span className="px-3 py-1 bg-navy-900 text-white text-xs font-bold rounded-full border border-gray-300">
+            <span className="px-3 py-1 bg-gray-500 text-white text-xs font-bold rounded-full border border-gray-300">
               {post.category}
             </span>
           </div>
@@ -124,12 +125,21 @@ const TradePostCard = ({ post, onLike, onTradeRequest }) => {
           {/* User Info Overlay */}
           <div className="absolute bottom-4 left-4 flex items-center gap-3">
             <div className="relative">
-              <img
-                src={post.postedBy.avatar}
-                alt={post.postedBy.username}
-                className="w-10 h-10 rounded-full border-2 border-gray-300"
-              />
-              {post.postedBy.verified && (
+              {post.postedBy && post.postedBy.avatar && !avatarError ? (
+                <img
+                  src={post.postedBy.avatar}
+                  alt={post.postedBy.username}
+                  onError={() => setAvatarError(true)}
+                  className="w-10 h-10 rounded-full border-2 border-gray-300 object-cover"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full border-2 border-gray-300 bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-700">
+                  {post.postedBy && post.postedBy.username
+                    ? post.postedBy.username.charAt(0).toUpperCase()
+                    : "U"}
+                </div>
+              )}
+              {post.postedBy && post.postedBy.verified && (
                 <CheckCircle className="absolute -bottom-1 -right-1 w-4 h-4 text-navy-900 bg-white rounded-full border border-gray-300" />
               )}
             </div>
@@ -209,7 +219,7 @@ const TradePostCard = ({ post, onLike, onTradeRequest }) => {
           <div className="flex gap-3">
             <button
               onClick={() => onLike(post.id)}
-              className={`flex-1 py-2.5 px-4 rounded-xl font-medium text-sm transition-all duration-300 ${
+              className={`cursor-pointer flex-1 py-2.5 px-4 rounded-xl font-medium text-sm transition-all duration-300 ${
                 post.isLiked
                   ? "bg-red-50 text-red-600 border border-red-200 hover:bg-red-100"
                   : "bg-white text-navy-900 border border-gray-300 hover:bg-gray-200"
@@ -220,7 +230,7 @@ const TradePostCard = ({ post, onLike, onTradeRequest }) => {
 
             <button
               onClick={handleTradeRequestClick}
-              className="flex-1 py-2.5 px-4 rounded-xl bg-navy-900 text-white font-medium text-sm hover:bg-navy-700 transition-all duration-300 flex items-center justify-center gap-2 border border-gray-300 shadow"
+              className="flex-1 py-2.5 px-4 rounded-xl bg-navy-900 text-gray-700 cursor-pointer font-medium text-sm hover:bg-navy-700 transition-all duration-300 flex items-center justify-center gap-2 border border-gray-300 shadow"
             >
               <Zap className="w-4 h-4" />
               Trade Now

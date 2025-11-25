@@ -8,8 +8,9 @@ const CreateTradePost = ({ onClose, onSubmit, categories }) => {
     category: "",
     tags: "",
     location: "",
-    images: [],
+    images: [], // preview URLs for UI
   });
+  const [imageFiles, setImageFiles] = useState([]); // actual File objects
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,12 +18,13 @@ const CreateTradePost = ({ onClose, onSubmit, categories }) => {
   };
 
   const handleImageUpload = (files) => {
-    const newImages = Array.from(files).slice(0, 3 - formData.images.length);
-    const imageUrls = newImages.map((file) => URL.createObjectURL(file));
+    const allowed = Array.from(files).slice(0, 3 - formData.images.length);
+    const imageUrls = allowed.map((file) => URL.createObjectURL(file));
     setFormData((prev) => ({
       ...prev,
       images: [...prev.images, ...imageUrls],
     }));
+    setImageFiles((prev) => [...prev, ...allowed]);
   };
 
   const removeImage = (index) => {
@@ -30,6 +32,7 @@ const CreateTradePost = ({ onClose, onSubmit, categories }) => {
       ...prev,
       images: prev.images.filter((_, i) => i !== index),
     }));
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = (e) => {
@@ -44,37 +47,61 @@ const CreateTradePost = ({ onClose, onSubmit, categories }) => {
       .map((tag) => tag.trim())
       .filter((tag) => tag.length > 0);
 
-    onSubmit({
-      ...formData,
-      tags,
-    });
+    // Convert image files to base64 strings so they persist when stored in DB
+    const filesToConvert = imageFiles.slice(0, 3);
+    const toBase64 = (file) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(file);
+      });
+
+    if (filesToConvert.length > 0) {
+      Promise.all(filesToConvert.map(toBase64))
+        .then((base64Images) => {
+          onSubmit({
+            ...formData,
+            tags,
+            images: base64Images,
+          });
+          // cleanup previews
+          formData.images.forEach((url) => URL.revokeObjectURL(url));
+          setFormData((prev) => ({ ...prev, images: [] }));
+          setImageFiles([]);
+        })
+        .catch((err) => {
+          console.error("Image conversion failed", err);
+          alert("Failed to process images");
+        });
+    } else {
+      onSubmit({
+        ...formData,
+        tags,
+        images: [],
+      });
+    }
   };
 
   return (
     <div
-      className="fixed inset-0 bg-gradient-to-br from-black/60 via-purple-900/20 to-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
       onClick={onClose}
     >
       <div
-        className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-white/20"
+        className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-200"
         onClick={(e) => e.stopPropagation()}
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%)",
-          boxShadow:
-            "0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255,255,255,0.1)",
-        }}
       >
         {/* Header */}
         <div className="relative p-6 border-b border-gray-200/50">
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-t-3xl"></div>
+          <div className="absolute inset-0 bg-transparent rounded-t-2xl"></div>
           <div className="relative flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+              <div className="p-2 bg-indigo-600 rounded-xl shadow-sm">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <h2 className="text-2xl font-bold text-gray-900">
                   Create Trade Post
                 </h2>
                 <p className="text-sm text-gray-500">
@@ -180,14 +207,14 @@ const CreateTradePost = ({ onClose, onSubmit, categories }) => {
           {/* Image Upload */}
           <div className="space-y-3">
             <label className="block text-sm font-semibold text-gray-700">
-              Photos (up to 3)
+              Photos (1 up to 3)
             </label>
 
             <div className="relative group">
-              <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-gradient-to-br from-gray-50/50 to-white/50 backdrop-blur-sm hover:border-indigo-400 hover:bg-gradient-to-br hover:from-indigo-50/50 hover:to-purple-50/50 transition-all duration-300 cursor-pointer">
+              <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-white hover:border-indigo-400 transition-all duration-300 cursor-pointer">
                 <div className="flex flex-col items-center space-y-3">
-                  <div className="p-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-200">
-                    <Camera className="w-8 h-8 text-white" />
+                  <div className="p-4 bg-gray-100 rounded-2xl shadow-sm group-hover:scale-105 transition-transform duration-200">
+                    <Camera className="w-8 h-8 text-gray-700" />
                   </div>
                   <div>
                     <p className="text-lg font-medium text-gray-700 mb-1">
@@ -216,7 +243,7 @@ const CreateTradePost = ({ onClose, onSubmit, categories }) => {
               <div className="grid grid-cols-3 gap-3">
                 {formData.images.map((image, index) => (
                   <div key={index} className="relative group">
-                    <div className="relative overflow-hidden rounded-xl border-2 border-white shadow-lg">
+                    <div className="relative overflow-hidden rounded-xl border-2 border-gray-200 shadow-sm bg-white">
                       <img
                         src={image}
                         alt={`Preview ${index + 1}`}
@@ -226,7 +253,7 @@ const CreateTradePost = ({ onClose, onSubmit, categories }) => {
                       <button
                         type="button"
                         onClick={() => removeImage(index)}
-                        className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-full p-1.5 shadow-lg hover:scale-110 transition-transform duration-200"
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 shadow hover:scale-105 transition-transform duration-200"
                       >
                         <X className="w-3 h-3" />
                       </button>
@@ -248,10 +275,9 @@ const CreateTradePost = ({ onClose, onSubmit, categories }) => {
             </button>
             <button
               type="submit"
-              className="flex-1 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 relative overflow-hidden group"
+              className="flex-1 px-6 py-3 rounded-xl bg-indigo-600 text-white font-semibold shadow-sm hover:bg-indigo-700 transition-all duration-200"
             >
-              <span className="relative z-10">Create Trade Post</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+              Create Trade Post
             </button>
           </div>
         </form>

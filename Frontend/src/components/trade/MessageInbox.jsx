@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MessageCircle,
   Search,
@@ -8,6 +8,32 @@ import {
   Video,
   MoreVertical,
 } from "lucide-react";
+import { fetchPosts } from "../../utils/tradeAPI";
+
+// Small Avatar component: shows image if available, otherwise initial
+const Avatar = ({ src, name, className = "w-12 h-12" }) => {
+  const [error, setError] = useState(false);
+  const initial = name ? name.charAt(0).toUpperCase() : "U";
+
+  if (src && !error) {
+    return (
+      <img
+        src={src}
+        alt={name}
+        onError={() => setError(true)}
+        className={`${className} rounded-full object-cover`}
+      />
+    );
+  }
+
+  return (
+    <div
+      className={`${className} rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-700`}
+    >
+      {initial}
+    </div>
+  );
+};
 
 const MessageInbox = ({ isOpen, onClose, isMobile }) => {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -15,170 +41,53 @@ const MessageInbox = ({ isOpen, onClose, isMobile }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [messages, setMessages] = useState({});
 
-  // Mock chat data with more users
-  const chats = [
-    {
-      id: 1,
-      name: "Alex Chen",
-      avatar:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face",
-      lastMessage: "Hey! Is the gaming laptop still available?",
-      time: "2m ago",
-      unread: 2,
-      online: true,
-    },
-    {
-      id: 2,
-      name: "Sarah Johnson",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b217?w=50&h=50&fit=crop&crop=face",
-      lastMessage: "Perfect! Let's meet tomorrow",
-      time: "1h ago",
-      unread: 0,
-      online: false,
-    },
-    {
-      id: 3,
-      name: "Mike Wilson",
-      avatar:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face",
-      lastMessage: "Thanks for the trade!",
-      time: "3h ago",
-      unread: 1,
-      online: true,
-    },
-    {
-      id: 4,
-      name: "Emma Davis",
-      avatar:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face",
-      lastMessage: "Is this still available?",
-      time: "5h ago",
-      unread: 0,
-      online: true,
-    },
-    {
-      id: 5,
-      name: "James Rodriguez",
-      avatar:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face",
-      lastMessage: "Great deal! 👍",
-      time: "1d ago",
-      unread: 0,
-      online: false,
-    },
-    {
-      id: 6,
-      name: "Lisa Parker",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108755-2616b332c3e9?w=50&h=50&fit=crop&crop=face",
-      lastMessage: "Can we meet tomorrow?",
-      time: "2d ago",
-      unread: 0,
-      online: true,
-    },
-    {
-      id: 7,
-      name: "David Kim",
-      avatar:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face",
-      lastMessage: "Perfect condition, thanks!",
-      time: "3d ago",
-      unread: 0,
-      online: false,
-    },
-    {
-      id: 8,
-      name: "Sophie Brown",
-      avatar:
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=50&h=50&fit=crop&crop=face",
-      lastMessage: "Looking for vintage items",
-      time: "4d ago",
-      unread: 0,
-      online: true,
-    },
-    {
-      id: 9,
-      name: "Ryan Martinez",
-      avatar:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face",
-      lastMessage: "Interested in your post",
-      time: "5d ago",
-      unread: 0,
-      online: false,
-    },
-    {
-      id: 10,
-      name: "Grace Lee",
-      avatar:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face",
-      lastMessage: "Trade completed successfully!",
-      time: "1w ago",
-      unread: 0,
-      online: true,
-    },
-  ];
+  const [contacts, setContacts] = useState([]);
+  const [loadingContacts, setLoadingContacts] = useState(true);
+  const [contactsError, setContactsError] = useState(null);
 
-  // Initialize default messages for each chat
-  const defaultMessages = {
-    1: [
-      {
-        id: 1,
-        text: "Hey! Is the gaming laptop still available?",
-        sender: "other",
-        time: "2:30 PM",
-        avatar: chats[0].avatar,
-      },
-      {
-        id: 2,
-        text: "Yes, it's still available! Would you like to see more photos?",
-        sender: "me",
-        time: "2:32 PM",
-      },
-    ],
-    2: [
-      {
-        id: 1,
-        text: "Perfect! Let's meet tomorrow",
-        sender: "other",
-        time: "1:00 PM",
-        avatar: chats[1].avatar,
-      },
-    ],
-    3: [
-      {
-        id: 1,
-        text: "Thanks for the trade!",
-        sender: "other",
-        time: "11:00 AM",
-        avatar: chats[2].avatar,
-      },
-      {
-        id: 2,
-        text: "You're welcome! Enjoy your new item!",
-        sender: "me",
-        time: "11:05 AM",
-      },
-    ],
-    4: [
-      {
-        id: 1,
-        text: "Is this still available?",
-        sender: "other",
-        time: "9:00 AM",
-        avatar: chats[3].avatar,
-      },
-    ],
-    5: [
-      {
-        id: 1,
-        text: "Great deal! 👍",
-        sender: "other",
-        time: "Yesterday",
-        avatar: chats[4].avatar,
-      },
-    ],
-  };
+  // We'll fetch recent posters and use them as contacts
+
+  // Initialize default messages (empty) — messages are loaded per-chat dynamically
+  const defaultMessages = {};
+
+  useEffect(() => {
+    let mounted = true;
+    setLoadingContacts(true);
+    setContactsError(null);
+
+    fetchPosts({ limit: 50 })
+      .then((posts) => {
+        // posts are already mapped by tradeAPI to include `postedBy`
+        const usersMap = new Map();
+        posts.forEach((p) => {
+          const u = p.postedBy;
+          if (!u || !u.id) return;
+          if (!usersMap.has(u.id)) {
+            usersMap.set(u.id, {
+              id: u.id,
+              name: u.username,
+              avatar: u.avatar,
+              lastMessage:
+                p.title || (p.description && p.description.slice(0, 50)),
+              time: p.timePosted || p.createdAt || "",
+              unread: 0,
+              online: false,
+            });
+          }
+        });
+        if (mounted) setContacts(Array.from(usersMap.values()));
+      })
+      .catch((err) => {
+        if (mounted) setContactsError(err.message || "Failed to load contacts");
+      })
+      .finally(() => {
+        if (mounted) setLoadingContacts(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   // Get current chat messages
   const getCurrentMessages = () => {
@@ -186,7 +95,7 @@ const MessageInbox = ({ isOpen, onClose, isMobile }) => {
     return messages[selectedChat.id] || defaultMessages[selectedChat.id] || [];
   };
 
-  const filteredChats = chats.filter((chat) =>
+  const filteredChats = contacts.filter((chat) =>
     chat.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -278,44 +187,57 @@ const MessageInbox = ({ isOpen, onClose, isMobile }) => {
         {!selectedChat ? (
           /* Chat List */
           <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400">
-            {filteredChats.map((chat) => (
-              <div
-                key={chat.id}
-                onClick={() => setSelectedChat(chat)}
-                className="p-4 border-b border-gray-100 hover:bg-gray-50/50 cursor-pointer transition-all duration-200 group"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <img
-                      src={chat.avatar}
-                      alt={chat.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    {chat.online && (
-                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+            {loadingContacts ? (
+              <div className="p-4 text-center text-sm text-gray-500">
+                Loading contacts...
+              </div>
+            ) : contactsError ? (
+              <div className="p-4 text-center text-sm text-red-500">
+                {contactsError}
+              </div>
+            ) : filteredChats.length === 0 ? (
+              <div className="p-4 text-center text-sm text-gray-500">
+                No contacts found
+              </div>
+            ) : (
+              filteredChats.map((chat) => (
+                <div
+                  key={chat.id}
+                  onClick={() => setSelectedChat(chat)}
+                  className="p-4 border-b border-gray-100 hover:bg-gray-50/50 cursor-pointer transition-all duration-200 group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <Avatar
+                        src={chat.avatar}
+                        name={chat.name}
+                        className="w-12 h-12"
+                      />
+                      {chat.online && (
+                        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+                      )}
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <h3 className="font-medium text-gray-900 truncate">
+                          {chat.name}
+                        </h3>
+                      </div>
+                      <p className="text-sm text-gray-600 truncate">
+                        {chat.lastMessage}
+                      </p>
+                    </div>
+
+                    {chat.unread > 0 && (
+                      <div className="bg-indigo-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        {chat.unread}
+                      </div>
                     )}
                   </div>
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1">
-                      <h3 className="font-medium text-gray-900 truncate">
-                        {chat.name}
-                      </h3>
-                      <span className="text-xs text-gray-500">{chat.time}</span>
-                    </div>
-                    <p className="text-sm text-gray-600 truncate">
-                      {chat.lastMessage}
-                    </p>
-                  </div>
-
-                  {chat.unread > 0 && (
-                    <div className="bg-indigo-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                      {chat.unread}
-                    </div>
-                  )}
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         ) : (
           /* Chat View */
@@ -330,10 +252,10 @@ const MessageInbox = ({ isOpen, onClose, isMobile }) => {
                   >
                     <X className="w-4 h-4 text-gray-500" />
                   </button>
-                  <img
-                    src={selectedChat.avatar}
-                    alt={selectedChat.name}
-                    className="w-10 h-10 rounded-full object-cover"
+                  <Avatar
+                    src={selectedChat?.avatar}
+                    name={selectedChat?.name}
+                    className="w-10 h-10"
                   />
                   <div>
                     <h3 className="font-medium text-gray-900">
@@ -369,10 +291,10 @@ const MessageInbox = ({ isOpen, onClose, isMobile }) => {
                   }`}
                 >
                   {message.sender === "other" && (
-                    <img
+                    <Avatar
                       src={message.avatar}
-                      alt="Avatar"
-                      className="w-8 h-8 rounded-full object-cover mb-1"
+                      name={selectedChat?.name || message.senderName}
+                      className="w-8 h-8 mb-1"
                     />
                   )}
 
@@ -405,10 +327,10 @@ const MessageInbox = ({ isOpen, onClose, isMobile }) => {
 
               {/* Typing Indicator */}
               <div className="flex items-center gap-2">
-                <img
+                <Avatar
                   src={selectedChat.avatar}
-                  alt="Avatar"
-                  className="w-8 h-8 rounded-full object-cover"
+                  name={selectedChat.name}
+                  className="w-8 h-8"
                 />
                 <div className="bg-white rounded-2xl rounded-bl-md px-4 py-2 border border-gray-200">
                   <div className="flex space-x-1">

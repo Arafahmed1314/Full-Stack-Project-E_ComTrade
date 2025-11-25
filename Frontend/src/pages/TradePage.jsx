@@ -10,10 +10,10 @@ import {
 } from "../components/trade";
 import {
   filterAndSortPosts,
-  createNewPost,
   checkIsMobile,
   calculateStats,
 } from "../utils/tradeUtils";
+import * as tradeAPI from "../utils/tradeAPI";
 
 // Import mock data
 import tradeData from "../data/trade.json";
@@ -39,9 +39,19 @@ const TradePage = () => {
     checkMobileSize();
     window.addEventListener("resize", checkMobileSize);
 
-    // Load mock data
-    setPosts(tradeData.tradePosts);
-    setFilteredPosts(tradeData.tradePosts);
+    // Load posts from backend
+    (async () => {
+      try {
+        const fetched = await tradeAPI.fetchPosts();
+        setPosts(fetched);
+        setFilteredPosts(fetched);
+      } catch (err) {
+        console.error("Failed to load trade posts", err);
+        // Fall back to mock data if available
+        setPosts(tradeData.tradePosts);
+        setFilteredPosts(tradeData.tradePosts);
+      }
+    })();
 
     return () => window.removeEventListener("resize", checkMobileSize);
   }, []);
@@ -57,10 +67,15 @@ const TradePage = () => {
     setFilteredPosts(filtered);
   }, [posts, searchQuery, selectedCategory, sortBy]);
 
-  const handleCreatePost = (newPost) => {
-    const post = createNewPost(newPost);
-    setPosts([post, ...posts]);
-    setShowCreatePost(false);
+  const handleCreatePost = async (newPost) => {
+    try {
+      const created = await tradeAPI.createPost(newPost);
+      setPosts((prev) => [created, ...prev]);
+      setShowCreatePost(false);
+    } catch (err) {
+      console.error("Create post failed", err);
+      alert(err.message || "Failed to create post");
+    }
   };
 
   return (
